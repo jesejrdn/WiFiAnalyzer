@@ -49,7 +49,9 @@ import com.vrem.wifianalyzer.wifi.band.WiFiChannel;
 import java.util.Locale;
 
 import static android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-
+/*
+* The main activity class which is the main function for any Java project
+*/
 public class MainActivity extends AppCompatActivity
     implements OnSharedPreferenceChangeListener, OnNavigationItemSelectedListener, NavigationMenuControl {
     private MainReload mainReload;
@@ -65,7 +67,9 @@ public class MainActivity extends AppCompatActivity
         Context context = ConfigurationUtils.createContext(newBase, newLocale);
         super.attachBaseContext(context);
     }
-
+	/*
+	* This is class that is called when an activity (or the app is started)
+	*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MainContext mainContext = MainContext.INSTANCE;
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity
 
         Settings settings = mainContext.getSettings();
         settings.initializeDefaultValues();
-
+		//sets the theme of app
         setTheme(settings.getThemeStyle().getThemeNoActionBar());
 
         setWiFiChannelPairs(mainContext);
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         mainReload = new MainReload(settings);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.main_activity); //sets the content of the screen on to the main activity layout
 
         settings.registerOnSharedPreferenceChangeListener(this);
 
@@ -113,22 +117,29 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setWiFiChannelPairs(MainContext mainContext) {
-        Settings settings = mainContext.getSettings();
+        Settings settings = mainContext.getSettings(); //grabs the settings object in mainContext
         String countryCode = settings.getCountryCode();
+		/*
+		* this will set the wifi channel pairs if the country code is different
+		*/
         if (!countryCode.equals(currentCountryCode)) {
             Pair<WiFiChannel, WiFiChannel> pair = WiFiBand.GHZ5.getWiFiChannels().getWiFiChannelPairFirst(countryCode);
             mainContext.getConfiguration().setWiFiChannelPair(pair);
             currentCountryCode = countryCode;
         }
     }
-
+	/*
+	* This method will change the layout if the device is a tablet or other large mobile device
+	*/
     private boolean isLargeScreen() {
         Configuration configuration = getResources().getConfiguration();
         int screenLayoutSize = configuration.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         return screenLayoutSize == Configuration.SCREENLAYOUT_SIZE_LARGE ||
             screenLayoutSize == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
-
+	/*
+	* Activity gets reloaded if a shared preference gets changed?
+	*/
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         MainContext mainContext = MainContext.INSTANCE;
@@ -228,7 +239,10 @@ public class MainActivity extends AppCompatActivity
     public void updateActionBar() {
         getCurrentNavigationMenu().activateOptions(this);
     }
-
+	/*
+	*  The rest of the methods below this line are getter and setter methods for
+	* items within the class for other use elsewhere in the app
+	*/
     public OptionMenu getOptionMenu() {
         return optionMenu;
     }
@@ -253,21 +267,21 @@ public class MainActivity extends AppCompatActivity
     public void setCurrentNavigationMenu(@NonNull NavigationMenu navigationMenu) {
         navigationMenuView.setCurrentNavigationMenu(navigationMenu);
     }
-
+	//getter method for NavigationView
     @NonNull
     @Override
     public NavigationView getNavigationView() {
         return navigationMenuView.getNavigationView();
     }
-
+	// getter method for navigationMenuView
     public NavigationMenuView getNavigationMenuView() {
         return navigationMenuView;
     }
-
+	//setter method for navigationMenuView
     void setNavigationMenuView(NavigationMenuView navigationMenuView) {
         this.navigationMenuView = navigationMenuView;
     }
-
+	// setter for setDrawerNavigation
     void setDrawerNavigation(DrawerNavigation drawerNavigation) {
         this.drawerNavigation = drawerNavigation;
     }
