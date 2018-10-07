@@ -36,9 +36,13 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+ * class that transforms  the wifi data
+ */
 class Transformer {
-
+    /*
+        transforms wifi info into a wifi connection object
+     */
     @NonNull
     WiFiConnection transformWifiInfo(WifiInfo wifiInfo) {
         if (wifiInfo == null || wifiInfo.getNetworkId() == -1) {
@@ -60,7 +64,9 @@ class Transformer {
     List<WiFiDetail> transformCacheResults(List<CacheResult> cacheResults) {
         return new ArrayList<>(CollectionUtils.collect(cacheResults, new ToWiFiDetail()));
     }
-
+    /*
+        gets the width of the channel
+     */
     @NonNull
     WiFiWidth getWiFiWidth(@NonNull ScanResult scanResult) {
         try {
