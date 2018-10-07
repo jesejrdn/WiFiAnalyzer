@@ -50,8 +50,8 @@ class AccessPointsAdapter extends BaseExpandableListAdapter implements UpdateNot
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        WiFiDetail wiFiDetail = (WiFiDetail) getGroup(groupPosition);
-        View view = accessPointDetail.makeView(convertView, parent, wiFiDetail, false);
+        WiFiDetail wiFiDetail = (WiFiDetail) getGroup(groupPosition); //get wifi group?
+        View view = accessPointDetail.makeView(convertView, parent, wiFiDetail, false); //make a view from accessPointDetail
         attachPopup(view, wiFiDetail);
 
         ImageView groupIndicator = view.findViewById(R.id.groupIndicator);

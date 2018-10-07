@@ -46,7 +46,10 @@ import com.vrem.wifianalyzer.settings.ThemeStyle;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+/*
+* This is the about page activity for the app
+* this is the code when the about page needs to be drawn
+*/
 public class AboutActivity extends AppCompatActivity {
     private static final String YEAR_FORMAT = "yyyy";
     private AlertDialog alertDialog;
@@ -56,6 +59,11 @@ public class AboutActivity extends AppCompatActivity {
         super.attachBaseContext(ActivityUtils.createContext(newBase));
     }
 
+	/*
+	* Draws the about_page when the menu bar item is selected.
+	* set the theme, contentview copyright and extra information to appear on the screen,
+	* and sets the action bar to be the support action bar
+	*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(ThemeStyle.getDefaultTheme());
@@ -65,13 +73,13 @@ public class AboutActivity extends AppCompatActivity {
         setExtraInformation();
         ActivityUtils.setActionBarOptions(getSupportActionBar());
     }
-
+	//set the copyright date to what the copyright is using the string.xml file
     private void setCopyright() {
         String year = new SimpleDateFormat(YEAR_FORMAT).format(new Date());
         String message = getResources().getString(R.string.app_copyright);
-        setText(R.id.about_copyright, message + year);
+        setText(R.id.about_copyright, message + year); // set the text of the aobut_copyright object to the message+year
     }
-
+	// set up the extra info textView
     private void setExtraInformation() {
         String text = BuildConfig.VERSION_NAME + " - " + BuildConfig.VERSION_CODE;
         Configuration configuration = MainContext.INSTANCE.getConfiguration();

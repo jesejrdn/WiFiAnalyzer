@@ -47,7 +47,7 @@ public class ConnectionView implements UpdateNotifier {
         setAccessPointDetail(new AccessPointDetail());
         setAccessPointPopup(new AccessPointPopup());
     }
-
+	//checks if count reaches the COUNT_MAX (4 in this case) don't know what its for yet
     private static boolean isCountMax(boolean noData) {
         if (noData) {
             count++;
@@ -56,7 +56,7 @@ public class ConnectionView implements UpdateNotifier {
         }
         return count >= COUNT_MAX;
     }
-
+	//count is set to 0 if noData is false in previous method
     private static void resetCount() {
         count = 0;
     }
@@ -68,31 +68,34 @@ public class ConnectionView implements UpdateNotifier {
         displayScanning(wiFiData);
         displayNoData(wiFiData);
     }
-
+	//setter method
     void setAccessPointDetail(@NonNull AccessPointDetail accessPointDetail) {
         this.accessPointDetail = accessPointDetail;
     }
-
+	//setter method
     void setAccessPointPopup(@NonNull AccessPointPopup accessPointPopup) {
         this.accessPointPopup = accessPointPopup;
     }
-
+	//will display the scanner if there is a wifi connection to be detected
     private void displayScanning(@NonNull WiFiData wiFiData) {
         mainActivity.findViewById(R.id.scanning).setVisibility(noData(wiFiData) ? View.VISIBLE : View.GONE);
     }
-
+	//sets the nodata view visible if there is no wifi data
     private void displayNoData(@NonNull WiFiData wiFiData) {
         mainActivity.findViewById(R.id.nodata).setVisibility(isCountMax(noData(wiFiData)) ? View.VISIBLE : View.GONE);
     }
-
+	//returns whethere there is wifi data to be found
     private boolean noData(@NonNull WiFiData wiFiData) {
         return mainActivity.getCurrentNavigationMenu().isRegistered() && wiFiData.getWiFiDetails().isEmpty();
     }
-
+	//display what the current connection is
     private void displayConnection(@NonNull WiFiData wiFiData, @NonNull ConnectionViewType connectionViewType) {
-        WiFiDetail connection = wiFiData.getConnection();
-        View connectionView = mainActivity.findViewById(R.id.connection);
-        WiFiConnection wiFiConnection = connection.getWiFiAdditional().getWiFiConnection();
+        WiFiDetail connection = wiFiData.getConnection(); //get wifidata about connection
+        View connectionView = mainActivity.findViewById(R.id.connection); //find the view for connection
+        WiFiConnection wiFiConnection = connection.getWiFiAdditional().getWiFiConnection(); //get all info about the connection
+		/*
+		* hides the connection view if view type is hidden, or there is no wifi connection
+		*/
         if (connectionViewType.isHide() || !wiFiConnection.isConnected()) {
             connectionView.setVisibility(View.GONE);
         } else {
@@ -106,13 +109,18 @@ public class ConnectionView implements UpdateNotifier {
             attachPopup(view, connection);
         }
     }
-
+	//get extra info for the connection view
     private void setViewConnection(View connectionView, WiFiConnection wiFiConnection) {
         String ipAddress = wiFiConnection.getIpAddress();
+		
+		//sets the text of the ipAddress view to the ipaddress
         connectionView.<TextView>findViewById(R.id.ipAddress).setText(ipAddress);
-
+		//grabs the textview called linkspeed
         TextView textLinkSpeed = connectionView.findViewById(R.id.linkSpeed);
-        int linkSpeed = wiFiConnection.getLinkSpeed();
+        int linkSpeed = wiFiConnection.getLinkSpeed(); //gets the link speed
+		/* will then update the textview to be visible or not wether or not the link speed is valid 
+		*  and update that link with the information
+		*/
         if (linkSpeed == WiFiConnection.LINK_SPEED_INVALID) {
             textLinkSpeed.setVisibility(View.GONE);
         } else {
@@ -120,7 +128,9 @@ public class ConnectionView implements UpdateNotifier {
             textLinkSpeed.setText(String.format(Locale.ENGLISH, "%d%s", linkSpeed, WifiInfo.LINK_SPEED_UNITS));
         }
     }
-
+	/*
+	* adds the attaches the wifi details to the popupView
+	*/
     private void attachPopup(@NonNull View view, @NonNull WiFiDetail wiFiDetail) {
         View popupView = view.findViewById(R.id.attachPopup);
         if (popupView != null) {

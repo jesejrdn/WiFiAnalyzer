@@ -33,14 +33,18 @@ public class WiFiConnection {
     private final String BSSID;
     private final String ipAddress;
     private final int linkSpeed;
-
+	/*
+	*sets up the wifi connection object the only thing that can be null is linspeed
+	*/
     public WiFiConnection(@NonNull String SSID, @NonNull String BSSID, @NonNull String ipAddress, int linkSpeed) {
         this.SSID = SSID;
         this.BSSID = BSSID;
         this.ipAddress = ipAddress;
         this.linkSpeed = linkSpeed;
     }
-
+	/*
+	* getter for wifi connection attributes 
+	*/
     @NonNull
     public String getSSID() {
         return SSID;
@@ -59,11 +63,13 @@ public class WiFiConnection {
     public int getLinkSpeed() {
         return linkSpeed;
     }
-
+	//check if there is a wifi connection
     public boolean isConnected() {
         return !EMPTY.equals(this);
     }
-
+	/*
+	* overidden equals for wifi connection object
+	*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
