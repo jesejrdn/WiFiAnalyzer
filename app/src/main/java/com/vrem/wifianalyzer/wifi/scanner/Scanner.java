@@ -17,7 +17,9 @@
  */
 
 package com.vrem.wifianalyzer.wifi.scanner;
-
+/*
+* looks like they use androids wifi library to scan for wifi info
+*/
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -42,7 +44,9 @@ class Scanner implements ScannerService {
     private WiFiData wiFiData;
     private Cache cache;
     private PeriodicScan periodicScan;
-
+	/*
+	* Scanner object 
+	*/
     Scanner(@NonNull WifiManager wifiManager, @NonNull Handler handler, @NonNull Settings settings) {
         this.updateNotifiers = new ArrayList<>();
         this.wifiManager = wifiManager;
@@ -52,7 +56,9 @@ class Scanner implements ScannerService {
         this.setCache(new Cache());
         this.periodicScan = new PeriodicScan(this, handler, settings);
     }
-
+	/*
+	* update the scanner. methods enable wifi and scan results are called and data collected from those is created into wifi data
+	*/
     @Override
     public void update() {
         enableWiFi();
@@ -60,28 +66,38 @@ class Scanner implements ScannerService {
         wiFiData = transformer.transformToWiFiData(cache.getScanResults(), wiFiInfo(), wifiConfiguration());
         IterableUtils.forEach(updateNotifiers, new UpdateClosure());
     }
-
+	/*
+	* getter method
+	*/
     @Override
     @NonNull
     public WiFiData getWiFiData() {
         return wiFiData;
     }
-
+	/*
+	* registers an update notifier
+	*/
     @Override
     public void register(@NonNull UpdateNotifier updateNotifier) {
         updateNotifiers.add(updateNotifier);
     }
-
+	/*
+	* removes an update notifier
+	*/
     @Override
     public void unregister(@NonNull UpdateNotifier updateNotifier) {
         updateNotifiers.remove(updateNotifier);
     }
-
+	/*
+	* pause the scanning
+	*/
     @Override
     public void pause() {
         periodicScan.stop();
     }
-
+	/*
+	* boolean if it is scanning
+	*/
     @Override
     public boolean isRunning() {
         return periodicScan.isRunning();
@@ -91,7 +107,9 @@ class Scanner implements ScannerService {
     public void resume() {
         periodicScan.start();
     }
-
+	/*
+	* will try to turn the wifi off on exit? 
+	*/
     @Override
     public void setWiFiOnExit() {
         if (settings.isWiFiOffOnExit()) {
@@ -102,7 +120,9 @@ class Scanner implements ScannerService {
             }
         }
     }
-
+	/*
+	* more getter and setters
+	*/
     @NonNull
     PeriodicScan getPeriodicScan() {
         return periodicScan;
@@ -124,7 +144,9 @@ class Scanner implements ScannerService {
     List<UpdateNotifier> getUpdateNotifiers() {
         return updateNotifiers;
     }
-
+	/*
+	* will make sure that wifi is on if it is off
+	*/
     private void enableWiFi() {
         try {
             if (!wifiManager.isWifiEnabled()) {

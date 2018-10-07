@@ -47,15 +47,20 @@ class AccessPointsAdapter extends BaseExpandableListAdapter implements UpdateNot
         setAccessPointPopup(new AccessPointPopup());
         expandableListView = null;
     }
-
+	/*
+	* method that gets the group view for the amount of acesspoints
+	*/
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         WiFiDetail wiFiDetail = (WiFiDetail) getGroup(groupPosition); //get wifi group?
         View view = accessPointDetail.makeView(convertView, parent, wiFiDetail, false); //make a view from accessPointDetail
         attachPopup(view, wiFiDetail);
-
+		//gets group indicator
         ImageView groupIndicator = view.findViewById(R.id.groupIndicator);
         int childrenCount = getChildrenCount(groupPosition);
+		/*
+		* if statement if there is some childs, the image view is set to visible
+		*/
         if (childrenCount > 0) {
             groupIndicator.setVisibility(View.VISIBLE);
             groupIndicator.setImageResource(isExpanded
@@ -76,13 +81,17 @@ class AccessPointsAdapter extends BaseExpandableListAdapter implements UpdateNot
         view.findViewById(R.id.groupIndicator).setVisibility(View.GONE);
         return view;
     }
-
+	/*
+	* updates the Adapter data
+	*/
     @Override
     public void update(@NonNull WiFiData wiFiData) {
         accessPointsAdapterData.update(wiFiData, expandableListView);
         notifyDataSetChanged();
     }
-
+	/*
+	* bunch of getter methods here
+	*/
     @Override
     public int getGroupCount() {
         return accessPointsAdapterData.parentsCount();
@@ -132,7 +141,9 @@ class AccessPointsAdapter extends BaseExpandableListAdapter implements UpdateNot
     public void onGroupExpanded(int groupPosition) {
         accessPointsAdapterData.onGroupExpanded(groupPosition);
     }
-
+	/*
+	* bunch of setter methods
+	*/
     void setAccessPointsAdapterData(@NonNull AccessPointsAdapterData accessPointsAdapterData) {
         this.accessPointsAdapterData = accessPointsAdapterData;
     }
