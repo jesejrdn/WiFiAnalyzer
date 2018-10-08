@@ -21,7 +21,9 @@ package com.vrem.wifianalyzer.wifi.scanner;
 import android.support.annotation.NonNull;
 
 import com.vrem.wifianalyzer.wifi.model.WiFiData;
-
+/*
+* scanner interface
+*/
 public interface ScannerService {
     void update();
 
