@@ -16,8 +16,12 @@ public class RecieveFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recieve_content, container, false);
-        TextView sendF = view.findViewById(R.id.Send_File);
-        Button button = view.findViewById(R.id.FiletoSend);
+
         return view;
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
