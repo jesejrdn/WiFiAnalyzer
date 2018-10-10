@@ -1,6 +1,6 @@
 package com.vrem.wifianalyzer.wifi.send;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.vrem.wifianalyzer.R;
 
 public class SendFragment extends Fragment {
@@ -18,6 +17,7 @@ public class SendFragment extends Fragment {
         View view = inflater.inflate(R.layout.send_content, container, false);
         TextView sendF = view.findViewById(R.id.Send_File);
         Button button = view.findViewById(R.id.FiletoSend);
+        Button buttonf = view.findViewById(R.id.Recievefile);
         return view;
     }
 }

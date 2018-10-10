@@ -31,4 +31,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/Submit"
         android:text="Send File"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Recievefile"
+        android:layout_marginTop="100dp"
+        android:text="Recieve file"/>
 </LinearLayout>
