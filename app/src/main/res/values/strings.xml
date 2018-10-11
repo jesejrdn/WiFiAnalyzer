@@ -207,5 +207,11 @@
     <string name="filter_security_title">"Security"</string>
     <string name="filter_security_key" translatable="false">"filter_security"</string>
     <!-- filter end -->
+    <!-- receive start-->
+    <string name="recvbutton" translatable="false">"receive a file"</string>
+    <string name="recvtext" translatable="false">"receive a file"</string>
+    <!--receive end-->
+
+    <!--send start-->
 
 </resources>

@@ -1,4 +1,4 @@
-package com.vrem.wifianalyzer.wifi.send;
+package com.vrem.wifianalyzer.filetransfer.send;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -17,7 +17,19 @@ public class SendFragment extends Fragment {
         View view = inflater.inflate(R.layout.send_content, container, false);
         TextView sendF = view.findViewById(R.id.Send_File);
         Button button = view.findViewById(R.id.FiletoSend);
-        Button buttonf = view.findViewById(R.id.Recievefile);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            // code goes here to select a file
+            }
+        });
+        Button button1 = view.findViewById(R.id.Submit);
+        button1.setOnClickListener(new View.OnClickListener(){ @Override
+        public void onClick(View view) {
+            //code goes here to send the file
+        }
+        });
         return view;
     }
 }

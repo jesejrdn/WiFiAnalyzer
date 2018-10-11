@@ -6,30 +6,18 @@
     android:fitsSystemWindows="true">
 
     <TextView
-        android:id="@+id/Send_File"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Send file"
+        android:text="@string/recvtext"
         android:textSize="16dp"
         android:textStyle="bold" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Choose a File"
-        android:id="@+id/FiletoSend"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Filname"
-        android:layout_gravity="center_horizontal"
-        android:text="Filler text"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/Submit"
-        android:text="Send File"/>
+        android:id="@+id/receive_file"
+        android:layout_marginTop="16dp"
+        android:text="@string/recvbutton"/>
 
 </LinearLayout>
