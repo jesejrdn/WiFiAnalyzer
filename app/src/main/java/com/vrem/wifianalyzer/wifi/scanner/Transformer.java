@@ -57,12 +57,12 @@ class Transformer {
 
     @NonNull
     List<String> transformWifiConfigurations(List<WifiConfiguration> configuredNetworks) {
-        return new ArrayList<>(CollectionUtils.collect(configuredNetworks, new ToString()));
+        return new ArrayList<>(CollectionUtils.collect(configuredNetworks, new ToString())); //collects the wifi configs
     }
 
     @NonNull
     List<WiFiDetail> transformCacheResults(List<CacheResult> cacheResults) {
-        return new ArrayList<>(CollectionUtils.collect(cacheResults, new ToWiFiDetail()));
+        return new ArrayList<>(CollectionUtils.collect(cacheResults, new ToWiFiDetail())); //collects all the cache results into new list
     }
     /*
         gets the width of the channel
@@ -112,7 +112,9 @@ class Transformer {
         //        centerFreq1,
         channelWidth
     }
-
+    /*
+     * class that changes data to wifi details.
+     */
     private class ToWiFiDetail implements org.apache.commons.collections4.Transformer<CacheResult, WiFiDetail> {
         @Override
         public WiFiDetail transform(CacheResult input) {

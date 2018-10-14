@@ -47,7 +47,7 @@ class PeriodicScan implements Runnable {
     void start() {
         nextRun(DELAY_INITIAL);
     }
-
+	
     private void nextRun(int delayInitial) {
         stop();
         handler.postDelayed(this, delayInitial);
@@ -59,7 +59,7 @@ class PeriodicScan implements Runnable {
         scanner.update();
         nextRun(settings.getScanInterval() * DELAY_INTERVAL);
     }
-
+	
     boolean isRunning() {
         return running;
     }

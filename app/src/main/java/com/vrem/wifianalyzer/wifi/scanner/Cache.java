@@ -37,7 +37,9 @@ import java.util.List;
 class Cache {
     private static final int ADJUST = 10;
     private final Deque<List<ScanResult>> cachedScanResults = new ArrayDeque<>();
-
+    /*
+    * gets a lit of the scan results
+     */
     @NonNull
     List<CacheResult> getScanResults() {
         ScanResult current = null;
