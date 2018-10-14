@@ -25,7 +25,9 @@ import com.vrem.wifianalyzer.wifi.accesspoint.AccessPointsFragment;
 import com.vrem.wifianalyzer.wifi.channelavailable.ChannelAvailableFragment;
 import com.vrem.wifianalyzer.wifi.channelgraph.ChannelGraphFragment;
 import com.vrem.wifianalyzer.wifi.channelrating.ChannelRatingFragment;
+import com.vrem.wifianalyzer.filetransfer.send.SendFragment;
 import com.vrem.wifianalyzer.wifi.timegraph.TimeGraphFragment;
+import com.vrem.wifianalyzer.filetransfer.recieve.RecieveFragment;
 
 public class NavigationItemFactory {
     public static final NavigationItem ACCESS_POINTS = new FragmentItem(new AccessPointsFragment(), true);
@@ -37,7 +39,8 @@ public class NavigationItemFactory {
     public static final NavigationItem VENDORS = new FragmentItem(new VendorFragment(), false);
     public static final NavigationItem SETTINGS = new ActivityItem(SettingActivity.class);
     public static final NavigationItem ABOUT = new ActivityItem(AboutActivity.class);
-
+    public static final NavigationItem SENDFILE = new FragmentItem(new SendFragment(),true);
+    public static final NavigationItem RECVFILE = new FragmentItem(new RecieveFragment(),true);
     private NavigationItemFactory() {
         throw new IllegalStateException("Factory class");
     }

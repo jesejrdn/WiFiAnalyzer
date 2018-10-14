@@ -36,46 +36,51 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-/*
- * class that transforms  the wifi data
- */
+
 class Transformer {
-    /*
-        transforms wifi info into a wifi connection object
-     */
+	/*
+	* transforms the wifiinfo into a wifi connection object.
+	*/
     @NonNull
     WiFiConnection transformWifiInfo(WifiInfo wifiInfo) {
         if (wifiInfo == null || wifiInfo.getNetworkId() == -1) {
             return WiFiConnection.EMPTY;
         }
+		/*
+		* converts the converts the wifi ssid into a correct ssid, grabs the BSSID, and coverts the IP adress, and gets the link speed
+		*/
         return new WiFiConnection(
             WiFiUtils.convertSSID(wifiInfo.getSSID()),
             wifiInfo.getBSSID(),
             WiFiUtils.convertIpAddress(wifiInfo.getIpAddress()),
             wifiInfo.getLinkSpeed());
     }
-
+	/*
+	* transforms the list of configured networks into an array list
+	*/
     @NonNull
     List<String> transformWifiConfigurations(List<WifiConfiguration> configuredNetworks) {
         return new ArrayList<>(CollectionUtils.collect(configuredNetworks, new ToString())); //collects the wifi configs
     }
-
+	/*
+	* transforms the cache (still don't know what this does)
+	*/
     @NonNull
     List<WiFiDetail> transformCacheResults(List<CacheResult> cacheResults) {
         return new ArrayList<>(CollectionUtils.collect(cacheResults, new ToWiFiDetail())); //collects all the cache results into new list
     }
-    /*
-        gets the width of the channel
-     */
+	/*
+	* gets the width of the wifi band
+	*/ 
     @NonNull
     WiFiWidth getWiFiWidth(@NonNull ScanResult scanResult) {
-        try {
+        try { //gotta catch exceptions
             return EnumUtils.find(WiFiWidth.class, getFieldValue(scanResult, Fields.channelWidth), WiFiWidth.MHZ_20);
         } catch (Exception e) {
             return WiFiWidth.MHZ_20;
         }
     }
-
+	//get the frequency that the channel is centered around
     int getCenterFrequency(@NonNull ScanResult scanResult, @NonNull WiFiWidth wiFiWidth) {
         try {
             int centerFrequency = getFieldValue(scanResult, Fields.centerFreq0);
@@ -93,12 +98,14 @@ class Transformer {
     boolean isExtensionFrequency(@NonNull ScanResult scanResult, @NonNull WiFiWidth wiFiWidth, int centerFrequency) {
         return WiFiWidth.MHZ_40.equals(wiFiWidth) && Math.abs(scanResult.frequency - centerFrequency) >= WiFiWidth.MHZ_40.getFrequencyWidthHalf();
     }
-
+	//gets the field value aka get the declared field value
     int getFieldValue(@NonNull ScanResult scanResult, @NonNull Fields field) throws NoSuchFieldException, IllegalAccessException {
         Field declaredField = scanResult.getClass().getDeclaredField(field.name());
         return (int) declaredField.get(scanResult);
     }
-
+	/*
+	* transforms wifiinfo and the cache results into wifi data.
+	*/
     @NonNull
     WiFiData transformToWiFiData(List<CacheResult> cacheResults, WifiInfo wifiInfo, List<WifiConfiguration> configuredNetworks) {
         List<WiFiDetail> wiFiDetails = transformCacheResults(cacheResults);
@@ -112,20 +119,22 @@ class Transformer {
         //        centerFreq1,
         channelWidth
     }
-    /*
-     * class that changes data to wifi details.
-     */
+	/*
+	* inner class towifidetal witch overides the transform method from the apache transformer class
+	*/
     private class ToWiFiDetail implements org.apache.commons.collections4.Transformer<CacheResult, WiFiDetail> {
         @Override
         public WiFiDetail transform(CacheResult input) {
-            ScanResult scanResult = input.getScanResult();
-            WiFiWidth wiFiWidth = getWiFiWidth(scanResult);
+            ScanResult scanResult = input.getScanResult(); //scan result
+            WiFiWidth wiFiWidth = getWiFiWidth(scanResult); // get the width from the scanresult
             int centerFrequency = getCenterFrequency(scanResult, wiFiWidth);
             WiFiSignal wiFiSignal = new WiFiSignal(scanResult.frequency, centerFrequency, wiFiWidth, input.getLevelAverage());
-            return new WiFiDetail(scanResult.SSID, scanResult.BSSID, scanResult.capabilities, wiFiSignal);
+            return new WiFiDetail(scanResult.SSID, scanResult.BSSID, scanResult.capabilities, wiFiSignal); //returns a new wifi detail object after gathering all the data
         }
     }
-
+	/*
+	* to string class
+	*/
     private class ToString implements org.apache.commons.collections4.Transformer<WifiConfiguration, String> {
         @Override
         public String transform(WifiConfiguration input) {

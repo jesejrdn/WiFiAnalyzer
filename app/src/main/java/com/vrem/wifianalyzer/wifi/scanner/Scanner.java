@@ -51,7 +51,7 @@ class Scanner implements ScannerService {
         this.updateNotifiers = new ArrayList<>();
         this.wifiManager = wifiManager;
         this.settings = settings;
-        this.wiFiData = WiFiData.EMPTY;
+        this.wiFiData = WiFiData.EMPTY; //wifi data start off empty
         this.setTransformer(new Transformer());
         this.setCache(new Cache());
         this.periodicScan = new PeriodicScan(this, handler, settings);
@@ -176,7 +176,9 @@ class Scanner implements ScannerService {
             return null;
         }
     }
-
+	/*
+	* returns a list of wifi configurations using the wifiManager get configured networks
+	*/
     private List<WifiConfiguration> wifiConfiguration() {
         try {
             return wifiManager.getConfiguredNetworks();

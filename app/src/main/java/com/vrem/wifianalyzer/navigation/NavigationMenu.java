@@ -42,6 +42,8 @@ public enum NavigationMenu {
     CHANNEL_AVAILABLE(R.drawable.ic_location_on_grey_500_48dp, R.string.action_channel_available, NavigationItemFactory.CHANNEL_AVAILABLE),
     VENDORS(R.drawable.ic_list_grey_500_48dp, R.string.action_vendors, NavigationItemFactory.VENDORS),
     SETTINGS(R.drawable.ic_settings_grey_500_48dp, R.string.action_settings, NavigationItemFactory.SETTINGS),
+    SENDFILE(R.drawable.ic_settings_grey_500_48dp,R.string.action_send,NavigationItemFactory.SENDFILE),
+    RECVFILE(R.drawable.ic_settings_grey_500_48dp, R.string.action_receive, NavigationItemFactory.RECVFILE),
     ABOUT(R.drawable.ic_info_outline_grey_500_48dp, R.string.action_about, NavigationItemFactory.ABOUT);
 
     private final int icon;
