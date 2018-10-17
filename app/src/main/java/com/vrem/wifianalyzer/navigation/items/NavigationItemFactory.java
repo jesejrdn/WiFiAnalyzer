@@ -25,9 +25,9 @@ import com.vrem.wifianalyzer.wifi.accesspoint.AccessPointsFragment;
 import com.vrem.wifianalyzer.wifi.channelavailable.ChannelAvailableFragment;
 import com.vrem.wifianalyzer.wifi.channelgraph.ChannelGraphFragment;
 import com.vrem.wifianalyzer.wifi.channelrating.ChannelRatingFragment;
-import com.vrem.wifianalyzer.filetransfer.server.ServerFragment;
+import com.vrem.wifianalyzer.tcptransfer.server.ServerFragment;
 import com.vrem.wifianalyzer.wifi.timegraph.TimeGraphFragment;
-import com.vrem.wifianalyzer.filetransfer.client.ClientFragment;
+import com.vrem.wifianalyzer.tcptransfer.client.ClientFragment;
 
 
 public class NavigationItemFactory {
