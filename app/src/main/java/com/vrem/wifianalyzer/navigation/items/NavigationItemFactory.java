@@ -28,6 +28,7 @@ import com.vrem.wifianalyzer.wifi.channelrating.ChannelRatingFragment;
 import com.vrem.wifianalyzer.tcptransfer.server.ServerFragment;
 import com.vrem.wifianalyzer.wifi.timegraph.TimeGraphFragment;
 import com.vrem.wifianalyzer.tcptransfer.client.ClientFragment;
+import com.vrem.wifianalyzer.wifi.timegraph.TimeGraphFragment;
 
 
 public class NavigationItemFactory {

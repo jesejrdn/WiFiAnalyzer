@@ -36,9 +36,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-/*
-* transformer class  which transforms google wifi library data into the data for this apps wifidata class.
-*/
+
 class Transformer {
 	/*
 	* transforms the wifiinfo into a wifi connection object.
@@ -62,14 +60,14 @@ class Transformer {
 	*/
     @NonNull
     List<String> transformWifiConfigurations(List<WifiConfiguration> configuredNetworks) {
-        return new ArrayList<>(CollectionUtils.collect(configuredNetworks, new ToString()));
+        return new ArrayList<>(CollectionUtils.collect(configuredNetworks, new ToString())); //collects the wifi configs
     }
 	/*
 	* transforms the cache (still don't know what this does)
 	*/
     @NonNull
     List<WiFiDetail> transformCacheResults(List<CacheResult> cacheResults) {
-        return new ArrayList<>(CollectionUtils.collect(cacheResults, new ToWiFiDetail()));
+        return new ArrayList<>(CollectionUtils.collect(cacheResults, new ToWiFiDetail())); //collects all the cache results into new list
     }
 	/*
 	* gets the width of the wifi band
