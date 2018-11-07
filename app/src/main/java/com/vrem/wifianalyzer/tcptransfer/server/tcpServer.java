@@ -85,7 +85,7 @@ public class tcpServer {
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                message += "Something wrong! " + e.toString() + "\n";
+                message += "Something wrong!\n" + e.toString() + "\n";
             }
 
         }
