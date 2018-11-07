@@ -1,4 +1,4 @@
-package com.vrem.wifianalyzer.filetransfer.client;
+package com.vrem.wifianalyzer.tcptransfer.client;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
