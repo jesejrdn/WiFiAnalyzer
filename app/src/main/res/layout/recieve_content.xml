@@ -16,8 +16,14 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/receive_file"
+        android:id="@+id/tcp_receive"
         android:layout_marginTop="16dp"
-        android:text="@string/recvbutton"/>
+        android:text="@string/tcpreceive"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/udp_receive"
+        android:layout_marginTop="20dp"
+        android:text="@string/udprecieve"/>
 
 </LinearLayout>

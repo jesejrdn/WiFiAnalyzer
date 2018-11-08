@@ -19,6 +19,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ClientFragment extends Fragment {
     private static final int PICKFILE_RESULT_CODE = 8778;
+    private Intent file = null;
     @Nullable
     @Override
     public View onCreateView(@NonNull  LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,13 +37,27 @@ public class ClientFragment extends Fragment {
                 //sendF.setText(inte.getData().getPath());
             }
         });
-        Button button1 = view.findViewById(R.id.Submit);
+        Button button1 = view.findViewById(R.id.Submittcp);
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-            //code goes here to send the file
+                if(file == null){
+                    //do nothing here
+                } else{
+                    // code for TCP client
+                }
             }
         });
+        Button button2 = view.findViewById(R.id.Submitudp);
+        button1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(file == null){
+                    //do nothing here
+                } else{
+                    // code for TCP client
+                }
+            }});
         return view;
 
     }
@@ -54,8 +69,9 @@ public class ClientFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent Data) {
         if (requestCode == PICKFILE_RESULT_CODE) {
             if (resultCode == RESULT_OK) {
-                TextView s = getView().findViewById(R.id.FiletoSend);
+                TextView s = getView().findViewById(R.id.Filname);
                 s.setText(Data.getData().getPath());
+                file=Data;
             }
         }
     }

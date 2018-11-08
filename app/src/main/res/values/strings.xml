@@ -210,8 +210,12 @@
     <!-- receive start-->
     <string name="recvbutton" translatable="false">"receive a file"</string>
     <string name="recvtext" translatable="false">"receive a file"</string>
+    <string name="tcpreceive" translatable="false">Receive a file using TCP</string>
+    <string name="udprecieve" translatable="false">Receive a file using UDP</string>
     <!--receive end-->
 
     <!--send start-->
-
+    <string name="udpsend" translatable="false">Send a file using UDP</string>
+    <string name="tcpsend" translatable="false">Send a file using TCP</string>
+    <!--send end-->
 </resources>

@@ -24,12 +24,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/Filname"
         android:layout_gravity="center_horizontal"
-        android:text="Filler text"
+        android:text="no file selected"
         />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Submit"
-        android:text="Send File"/>
+        android:id="@+id/Submittcp"
+        android:text="@string/tcpsend"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Submitudp"
+        android:text="@string/udpsend"/>
+
 
 </LinearLayout>
