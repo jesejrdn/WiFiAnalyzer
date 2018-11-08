@@ -55,7 +55,7 @@ public class ClientFragment extends Fragment {
                 if(file == null){
                     //do nothing here
                 } else{
-                    // code for TCP client
+                    // code for UCP client to call
                 }
             }});
         return view;
