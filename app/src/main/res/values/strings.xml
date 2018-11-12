@@ -217,5 +217,6 @@
     <!--send start-->
     <string name="udpsend" translatable="false">Send a file using UDP</string>
     <string name="tcpsend" translatable="false">Send a file using TCP</string>
+    <string name="ping" translatable="false">Ping</string>
     <!--send end-->
 </resources>

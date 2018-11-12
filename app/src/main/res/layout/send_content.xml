@@ -37,5 +37,11 @@
         android:id="@+id/Submitudp"
         android:text="@string/udpsend"/>
 
+    <Button
+        android:id="@+id/ping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ping" />
+
 
 </LinearLayout>

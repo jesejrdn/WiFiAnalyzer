@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ public class ClientFragment extends Fragment {
         View view = inflater.inflate(R.layout.send_content, container, false);
 
         Button button = view.findViewById(R.id.FiletoSend);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,6 +37,7 @@ public class ClientFragment extends Fragment {
                 //sendF.setText(inte.getData().getPath());
             }
         });
+
         Button button1 = view.findViewById(R.id.Submittcp);
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -46,12 +47,28 @@ public class ClientFragment extends Fragment {
                 } else{
                     // code for TCP client
                 }
+
             }
         });
+
         Button button2 = view.findViewById(R.id.Submitudp);
-        button1.setOnClickListener(new View.OnClickListener(){
+        button2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+
+                if(file == null){
+                    //do nothing here
+                } else{
+                    // code for UCP client to call
+                }
+            }});
+
+        Button pingBtn = view.findViewById(R.id.ping);
+        pingBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Log.d("dad", "Ping clicked");
+
                 if(file == null){
                     //do nothing here
                 } else{
