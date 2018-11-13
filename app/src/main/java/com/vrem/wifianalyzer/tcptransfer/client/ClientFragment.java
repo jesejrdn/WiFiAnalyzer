@@ -34,7 +34,7 @@ public class ClientFragment extends Fragment {
                 inte.setType("*/*");
                 inte= Intent.createChooser(inte, "Choose a file");
                 startActivityForResult(inte, PICKFILE_RESULT_CODE);
-                //sendF.setText(inte.getData().getPath());
+
             }
         });
         Button button1 = view.findViewById(R.id.Submittcp);

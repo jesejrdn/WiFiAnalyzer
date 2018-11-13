@@ -25,5 +25,11 @@
         android:id="@+id/udp_receive"
         android:layout_marginTop="20dp"
         android:text="@string/udprecieve"/>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/ipaddr"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
 </LinearLayout>

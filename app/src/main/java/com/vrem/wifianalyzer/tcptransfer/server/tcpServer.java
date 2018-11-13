@@ -92,7 +92,7 @@ public class tcpServer {
 
     }
 
-    public String getIpAddress() {
+    public static String getIpAddress() {
         String ip = "";
         try {
             Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
@@ -107,7 +107,7 @@ public class tcpServer {
                             .nextElement();
 
                     if (inetAddress.isSiteLocalAddress()) {
-                        ip += "Server running at : "
+                        ip += " Server running at : "
                                 + inetAddress.getHostAddress();
                     }
                 }
