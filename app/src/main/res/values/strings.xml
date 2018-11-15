@@ -218,5 +218,7 @@
     <string name="udpsend" translatable="false">"Send a file using UDP"</string>
     <string name="tcpsend" translatable="false">"Send a file using TCP"</string>
     <string name="Ping" translatable="false">"Send a ping to a Server"</string>
+    <string name="EnterIP" translatable="false">"Enter an IP address to connect to</string>
     <!--send end-->
+    <color name="white">#FFFFFF</color>
 </resources>

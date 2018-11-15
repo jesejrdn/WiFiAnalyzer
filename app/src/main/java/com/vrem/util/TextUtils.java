@@ -49,7 +49,14 @@ public class TextUtils {
             ? StringUtils.EMPTY
             : trim(android.text.TextUtils.join(SEPARATOR, source.toArray()));
     }
+    public static Boolean isIp (String IpAdress){
+        Boolean IP=true;
+        String compare;
+        Integer num;
+        compare=IpAdress.substring(0,2);
 
+        return IP;
+    }
     @NonNull
     public static String trim(String source) {
         return StringUtils.isBlank(source)
