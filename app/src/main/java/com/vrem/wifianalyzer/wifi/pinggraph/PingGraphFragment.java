@@ -57,6 +57,7 @@ public class PingGraphFragment extends Fragment {
         super.onDestroy();
     }
 
+    // TODO: For testing purposes
     PingGraphAdapter getPingGraphAdapter() {
         return pingGraphAdapter;
     }

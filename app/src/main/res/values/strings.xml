@@ -37,6 +37,7 @@
     <string name="action_channel_rating">"Channel Rating"</string>
     <string name="action_channel_graph">"Channel Graph"</string>
     <string name="action_time_graph">"Time Graph"</string>
+    <string name="action_ping_graph">"Ping Graph"</string>
     <string name="action_export">"Export"</string>
     <string name="action_channel_available">"Available Channels"</string>
     <string name="action_vendors">"Vendors"</string>

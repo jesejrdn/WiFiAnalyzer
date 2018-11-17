@@ -27,8 +27,8 @@ import com.vrem.wifianalyzer.wifi.channelgraph.ChannelGraphFragment;
 import com.vrem.wifianalyzer.wifi.channelrating.ChannelRatingFragment;
 import com.vrem.wifianalyzer.tcptransfer.server.ServerFragment;
 import com.vrem.wifianalyzer.wifi.timegraph.TimeGraphFragment;
+import com.vrem.wifianalyzer.wifi.pinggraph.PingGraphFragment;
 import com.vrem.wifianalyzer.tcptransfer.client.ClientFragment;
-import com.vrem.wifianalyzer.wifi.timegraph.TimeGraphFragment;
 
 
 public class NavigationItemFactory {
@@ -36,6 +36,7 @@ public class NavigationItemFactory {
     public static final NavigationItem CHANNEL_RATING = new FragmentItem(new ChannelRatingFragment(), true);
     public static final NavigationItem CHANNEL_GRAPH = new FragmentItem(new ChannelGraphFragment(), true);
     public static final NavigationItem TIME_GRAPH = new FragmentItem(new TimeGraphFragment(), true);
+    public static final NavigationItem PING_GRAPH = new FragmentItem(new PingGraphFragment(), true);
     public static final NavigationItem EXPORT = new ExportItem();
     public static final NavigationItem CHANNEL_AVAILABLE = new FragmentItem(new ChannelAvailableFragment(), false);
     public static final NavigationItem VENDORS = new FragmentItem(new VendorFragment(), false);

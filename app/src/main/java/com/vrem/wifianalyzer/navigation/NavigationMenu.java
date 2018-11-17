@@ -38,6 +38,8 @@ public enum NavigationMenu {
     CHANNEL_RATING(R.drawable.ic_wifi_tethering_grey_500_48dp, R.string.action_channel_rating, NavigationItemFactory.CHANNEL_RATING, NavigationOptionFactory.RATING),
     CHANNEL_GRAPH(R.drawable.ic_insert_chart_grey_500_48dp, R.string.action_channel_graph, NavigationItemFactory.CHANNEL_GRAPH, NavigationOptionFactory.OTHER),
     TIME_GRAPH(R.drawable.ic_show_chart_grey_500_48dp, R.string.action_time_graph, NavigationItemFactory.TIME_GRAPH, NavigationOptionFactory.OTHER),
+    // TODO: Support multiple languages for ping graph xml string
+    PING_GRAPH(R.drawable.ic_show_chart_grey_500_48dp, R.string.action_ping_graph, NavigationItemFactory.PING_GRAPH, NavigationOptionFactory.OTHER),
     EXPORT(R.drawable.ic_import_export_grey_500_48dp, R.string.action_export, NavigationItemFactory.EXPORT),
     CHANNEL_AVAILABLE(R.drawable.ic_location_on_grey_500_48dp, R.string.action_channel_available, NavigationItemFactory.CHANNEL_AVAILABLE),
     VENDORS(R.drawable.ic_list_grey_500_48dp, R.string.action_vendors, NavigationItemFactory.VENDORS),
