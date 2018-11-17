@@ -66,7 +66,10 @@
 
     <string name="graph_channel_axis_x">"WiFi Channels"</string>
     <string name="graph_time_axis_x">"Scan Count"</string>
+    <string name="graph_ping_axis_x">"Ping Count"</string>
     <string name="graph_axis_y">"Signal Strength (dBm)"</string>
+    <string name="graph_ping_axis_y">"Round Trip Time"</string>
+
 
     <!-- settings start -->
     <string name="start_menu_title">"Start"</string>
@@ -121,6 +124,8 @@
     <string name="graph_maximum_y_summary" translatable="false">"%s"</string>
     <string name="graph_maximum_y_key" translatable="false">"graph_maximum_y"</string>
     <string name="graph_maximum_y_default" translatable="false">"2"</string>
+
+    <string name="graph_maximum_ping_y_default" translatable="false">"0"</string>
 
     <string name="channel_graph_legend_title">"Channel Graph Legend Display"</string>
     <string name="channel_graph_legend_summary" translatable="false">"%s"</string>

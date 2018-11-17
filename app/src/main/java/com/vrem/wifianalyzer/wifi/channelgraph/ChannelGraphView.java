@@ -38,6 +38,7 @@ import com.vrem.wifianalyzer.wifi.graphutils.GraphConstants;
 import com.vrem.wifianalyzer.wifi.graphutils.GraphViewBuilder;
 import com.vrem.wifianalyzer.wifi.graphutils.GraphViewNotifier;
 import com.vrem.wifianalyzer.wifi.graphutils.GraphViewWrapper;
+import com.vrem.wifianalyzer.wifi.model.PingData;
 import com.vrem.wifianalyzer.wifi.model.WiFiData;
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail;
 import com.vrem.wifianalyzer.wifi.predicate.FilterPredicate;
@@ -70,6 +71,11 @@ class ChannelGraphView implements GraphViewNotifier {
         graphViewWrapper.removeSeries(newSeries);
         graphViewWrapper.updateLegend(settings.getChannelGraphLegend());
         graphViewWrapper.setVisibility(isSelected() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void update(@NonNull PingData pingData) {
+
     }
 
     private boolean isSelected() {

@@ -41,7 +41,10 @@ import static android.content.SharedPreferences.OnSharedPreferenceChangeListener
 
 public class Settings {
     static final int GRAPH_Y_MULTIPLIER = -10;
+    static final int GRAPH_PING_Y_MULTIPLIER = 10;
     static final int GRAPH_Y_DEFAULT = 2;
+    static final int GRAPH_PING_Y_DEFAULT = 0;
+
 
     private final Repository repository;
 
@@ -65,6 +68,12 @@ public class Settings {
         int defaultValue = repository.getStringAsInteger(R.string.graph_maximum_y_default, GRAPH_Y_DEFAULT);
         int result = repository.getStringAsInteger(R.string.graph_maximum_y_key, defaultValue);
         return result * GRAPH_Y_MULTIPLIER;
+    }
+
+    public int getGraphPingMaximumY() {
+        int defaultValue = repository.getStringAsInteger(R.string.graph_maximum_ping_y_default, GRAPH_PING_Y_DEFAULT);
+        int result = repository.getStringAsInteger(R.string.graph_maximum_y_key, defaultValue);
+        return result * GRAPH_PING_Y_MULTIPLIER;
     }
 
     public void toggleWiFiBand() {

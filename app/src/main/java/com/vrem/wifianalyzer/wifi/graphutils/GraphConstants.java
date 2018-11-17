@@ -24,7 +24,8 @@ public class GraphConstants {
     public static final int MAX_SCAN_COUNT = 200;
     public static final int MAX_Y = 0;
     public static final int MAX_Y_DEFAULT = -20;
-    public static final int MIN_Y = -100;
+    public static final int MAX_PING_Y_DEFAULT = 100;
+    public static final int MIN_Y = 0;
     public static final int MIN_Y_OFFSET = -1;
     public static final int MIN_Y_HALF = MIN_Y / 2;
     public static final int NUM_X_CHANNEL = 18;

@@ -22,10 +22,13 @@ import android.support.annotation.NonNull;
 
 import com.jjoe64.graphview.GraphView;
 import com.vrem.wifianalyzer.wifi.model.WiFiData;
+import com.vrem.wifianalyzer.wifi.model.PingData;
+
 
 public interface GraphViewNotifier {
     @NonNull
     GraphView getGraphView();
 
     void update(@NonNull WiFiData wiFiData);
+    void update(@NonNull PingData pingData);
 }

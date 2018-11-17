@@ -2,6 +2,7 @@ package com.vrem.wifianalyzer.wifi.pinggraph;
 
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
 import com.jjoe64.graphview.GraphView;
@@ -14,6 +15,7 @@ import com.vrem.wifianalyzer.wifi.graphutils.GraphConstants;
 import com.vrem.wifianalyzer.wifi.graphutils.GraphViewBuilder;
 import com.vrem.wifianalyzer.wifi.graphutils.GraphViewNotifier;
 import com.vrem.wifianalyzer.wifi.graphutils.GraphViewWrapper;
+import com.vrem.wifianalyzer.wifi.model.PingData;
 import com.vrem.wifianalyzer.wifi.model.WiFiData;
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail;
 import com.vrem.wifianalyzer.wifi.predicate.FilterPredicate;
@@ -36,19 +38,41 @@ public class PingGraphView implements GraphViewNotifier {
     }
 
     @Override
-    public void update(@NonNull WiFiData wiFiData) {
+    public void update(@NonNull PingData pingData) {
         Settings settings = MainContext.INSTANCE.getSettings();
+        Log.d("PING", "Starting Ping");
+
+        pingData.setOnPingListener(new PingData.OnPingListener() {
+            @Override
+            public void onPingSuccess() {
+                Log.d("SUCCESS", "onPingSuccess: SUCCESS");
+            }
+
+            @Override
+            public void onPingFailure() {
+                Log.d("FAILURE", "onPingSuccess: FAILURE");
+
+            }
+
+            @Override
+            public void onPingFinish() {
+                Log.d("FINISH", "onPingSuccess: FINISH");
+
+            }
+        });
+
+        pingData.pingUntilFailed("google.com", 5000);
 
         //TODO: May just remove these three lines and get a list of ping detailes?
-        Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings);
+//        Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings);
 
         // TODO: Must be replaced with getPingDeatails?
-        List<WiFiDetail> wiFiDetails = wiFiData.getWiFiDetails(predicate, settings.getSortBy());
+//        List<WiFiDetail> wiFiDetails = wiFiData.getWiFiDetails(predicate, settings.getSortBy());
 
         // TODO: This will add new ping series data to the graph
-        Set<WiFiDetail> newSeries = pingDataManager.addSeriesData(graphViewWrapper, wiFiDetails, settings.getGraphMaximumY());
+//        Set<WiFiDetail> newSeries = pingDataManager.addSeriesData(graphViewWrapper, wiFiDetails, settings.getGraphMaximumY());
 
-        graphViewWrapper.removeSeries(newSeries);
+//        graphViewWrapper.removeSeries(newSeries);
         graphViewWrapper.updateLegend(settings.getTimeGraphLegend());
         graphViewWrapper.setVisibility(isSelected() ? View.VISIBLE : View.GONE);
     }
@@ -61,6 +85,11 @@ public class PingGraphView implements GraphViewNotifier {
     @NonNull
     public GraphView getGraphView() {
         return graphViewWrapper.getGraphView();
+    }
+
+    @Override
+    public void update(@NonNull WiFiData wiFiData) {
+
     }
 
     private int getNumX() {
@@ -78,10 +107,10 @@ public class PingGraphView implements GraphViewNotifier {
     @NonNull
     private GraphView makeGraphView(@NonNull MainContext mainContext, Settings settings) {
         Resources resources = mainContext.getResources();
-        return new GraphViewBuilder(mainContext.getContext(), getNumX(), settings.getGraphMaximumY(), settings.getThemeStyle())
+        return new GraphViewBuilder(mainContext.getContext(), getNumX(), settings.getGraphPingMaximumY(), settings.getThemeStyle())
                 .setLabelFormatter(new PingAxisLabel())
-                .setVerticalTitle(resources.getString(R.string.graph_axis_y))
-                .setHorizontalTitle(resources.getString(R.string.graph_time_axis_x))
+                .setVerticalTitle(resources.getString(R.string.graph_ping_axis_y))
+                .setHorizontalTitle(resources.getString(R.string.graph_ping_axis_x))
                 .setHorizontalLabelsVisible(false)
                 .build();
     }
