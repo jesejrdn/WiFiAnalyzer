@@ -1,6 +1,10 @@
 package com.vrem.wifianalyzer.tcptransfer.server;
 
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.TextView;
+
+import com.vrem.wifianalyzer.R;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,23 +16,24 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-public class tcpServer extends AsyncTask<String, String, String> {
+public class tcpServer extends AsyncTask<String, String, Void> {
 
 
     private String message = "";
     private static final int socketServerPORT = 8080;
 
     @Override
-    public String doInBackground(String... f){
+    public Void doInBackground(String... f){
         this.send();
         return null;
     }
     public void send() {
         ServerSocket serverSocket;
         int count = 0;
-
+        
         try {
             serverSocket = new ServerSocket(socketServerPORT);
+
             while (true) {
                 Socket socket = serverSocket.accept();
                 count++;

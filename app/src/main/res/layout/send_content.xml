@@ -36,7 +36,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:hint="@string/enteranIP"
+        android:id="@+id/address"
+        android:inputType="text"
         android:layout_marginBottom="16dp"/>
     <Button
         android:layout_width="match_parent"

@@ -221,4 +221,5 @@
     <string name="EnterIP" translatable="false">"Enter an IP address to connect to</string>
     <!--send end-->
     <color name="white">#FFFFFF</color>
+    <string name="enteranIP" translatable="false">"Enter an IP...</string>
 </resources>

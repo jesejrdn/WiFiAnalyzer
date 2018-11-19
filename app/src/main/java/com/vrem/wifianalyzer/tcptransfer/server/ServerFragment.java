@@ -23,6 +23,7 @@ public class ServerFragment extends Fragment {
         Button receive_button = view.findViewById(R.id.tcp_receive);
         Button udp_receive = view.findViewById(R.id.udp_receive);
         final TextView IPaddress=view.findViewById(R.id.ipaddr);
+
         receive_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,4 +57,3 @@ public class ServerFragment extends Fragment {
         return view;
     }
     }
-}

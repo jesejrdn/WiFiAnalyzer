@@ -1,5 +1,7 @@
 package com.vrem.wifianalyzer.tcptransfer.client;
 
+import android.os.AsyncTask;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -12,9 +14,14 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class tcpclient {
-    private static final int socketServerPORT = 8080;
-    public void sendfile(String filePath, String IP){
+public class tcpclient extends AsyncTask<String,String,String> {
+    private  final int socketServerPORT = 8080;
+    @Override
+    public  String doInBackground(String... param){
+        this.sendFile(param[0],param[1]);
+        return "test";
+    }
+    public void sendFile(String filePath, String IP){
         File sending= new File(filePath);
         byte[] fileInBytes= new byte[4096];
         int count;

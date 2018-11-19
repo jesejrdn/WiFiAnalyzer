@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vrem.wifianalyzer.R;
@@ -19,12 +20,13 @@ import static android.app.Activity.RESULT_OK;
 
 public class ClientFragment extends Fragment {
     private static final int PICKFILE_RESULT_CODE = 8778;
-    private Intent file = null;
+    private String file = null;
     @Nullable
     @Override
     public View onCreateView(@NonNull  LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.send_content, container, false);
-
+        EditText ip = view.findViewById(R.id.address);
+        final String realip =ip.getText().toString();
         Button button = view.findViewById(R.id.FiletoSend);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +46,8 @@ public class ClientFragment extends Fragment {
                 if(file == null){
                     //do nothing here
                 } else{
-                    // code for TCP client
+                    tcpclient client= new tcpclient();
+                    client.execute(file,realip);
                 }
             }
         });
@@ -71,7 +74,7 @@ public class ClientFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 TextView s = getView().findViewById(R.id.Filname);
                 s.setText(Data.getData().getPath());
-                file=Data;
+                file=Data.getData().getPath();
             }
         }
     }
