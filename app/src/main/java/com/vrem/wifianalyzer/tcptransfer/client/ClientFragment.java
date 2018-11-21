@@ -46,8 +46,7 @@ public class ClientFragment extends Fragment {
                 if(file == null){
                     //do nothing here
                 } else{
-                    tcpclient client= new tcpclient();
-                    client.execute(file,realip);
+                    new ClientAdapter().execute(file,realip);
                 }
             }
         });

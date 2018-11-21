@@ -38,4 +38,13 @@
         android:layout_marginTop="20dp"
         android:id="@+id/waitingId"
         android:layout_gravity="center"/>
+    <ProgressBar
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:id="@+id/progbar"
+        android:visibility="invisible"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progress="0"
+        />
 </LinearLayout>

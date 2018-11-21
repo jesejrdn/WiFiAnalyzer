@@ -16,21 +16,16 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-public class tcpServer extends AsyncTask<String, String, Void> {
+public class tcpServer  {
 
 
     private String message = "";
     private static final int socketServerPORT = 8080;
 
-    @Override
-    public Void doInBackground(String... f){
-        this.send();
-        return null;
-    }
     public void send() {
         ServerSocket serverSocket;
         int count = 0;
-        
+
         try {
             serverSocket = new ServerSocket(socketServerPORT);
 

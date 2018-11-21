@@ -14,13 +14,9 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class tcpclient extends AsyncTask<String,String,String> {
+public class tcpclient{
     private  final int socketServerPORT = 8080;
-    @Override
-    public  String doInBackground(String... param){
-        this.sendFile(param[0],param[1]);
-        return "test";
-    }
+
     public void sendFile(String filePath, String IP){
         File sending= new File(filePath);
         byte[] fileInBytes= new byte[4096];

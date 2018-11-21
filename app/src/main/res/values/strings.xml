@@ -208,8 +208,8 @@
     <string name="filter_security_key" translatable="false">"filter_security"</string>
     <!-- filter end -->
     <!-- receive start-->
-    <string name="recvbutton" translatable="false">"receive a file"</string>
-    <string name="recvtext" translatable="false">"receive a file"</string>
+    <string name="recvbutton" translatable="false">"Receive a file"</string>
+    <string name="recvtext" translatable="false">"Receive a file"</string>
     <string name="tcpreceive" translatable="false">"Receive a file using TCP"</string>
     <string name="udprecieve" translatable="false">"Receive a file using UDP"</string>
     <!--receive end-->

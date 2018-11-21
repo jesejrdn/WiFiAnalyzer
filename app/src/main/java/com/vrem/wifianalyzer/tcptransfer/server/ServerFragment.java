@@ -36,8 +36,8 @@ public class ServerFragment extends Fragment {
                 /*
                 set up send file part
                  */
-                tcpServer tcpServe=new tcpServer();
-                tcpServe.execute();
+
+
                 }
         });
             udp_receive.setOnClickListener(new View.OnClickListener() {
