@@ -38,6 +38,13 @@
         android:layout_marginTop="20dp"
         android:id="@+id/waitingId"
         android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Reciving_file"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"
+        android:text="@string/file"/>
     <ProgressBar
         android:layout_width="300dp"
         android:layout_gravity="center"
