@@ -30,7 +30,7 @@ import static android.app.Activity.RESULT_OK;
 public class ClientFragment extends Fragment implements tcpinterface {
     private static final int PICKFILE_RESULT_CODE = 8778;
     private String file = null;
-    private int samplingCount = 1;
+    private int samplingCount = 10;
     private Button button1;
 
     @Nullable
@@ -130,7 +130,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                     packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(realip), PORT);
                                     client.send(packet);
                                 }
-                                Thread.sleep(5000);
+                                Thread.sleep(1000);
                             }
                         } catch (IOException e) {
                             // TODO Auto-generated catch block

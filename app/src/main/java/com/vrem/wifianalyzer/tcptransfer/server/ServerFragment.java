@@ -18,10 +18,17 @@ import com.vrem.wifianalyzer.R;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class ServerFragment extends Fragment{
+public class ServerFragment extends Fragment {
     TextView wait;
     private static final int socketServerPORT = 8080;
     ProgressBar prog;
@@ -48,6 +55,7 @@ public class ServerFragment extends Fragment{
                 String yes = "test";
                 new Thread(new Runnable() {
                     int count = 0;
+
                     class SocketServerReplyThread extends Thread {
 
                         private Socket hostThreadSocket;
@@ -57,11 +65,12 @@ public class ServerFragment extends Fragment{
                             hostThreadSocket = socket;
                             cnt = c;
                         }
+
                         @Override
                         public void run() {
                             OutputStream outputStream;
                             String msgReply = "Hello from Server, you are #" + cnt;
-                            Log.e("mag",msgReply);
+                            Log.e("mag", msgReply);
                             try {
                                 outputStream = hostThreadSocket.getOutputStream();
                                 PrintStream printStream = new PrintStream(outputStream);
@@ -75,7 +84,9 @@ public class ServerFragment extends Fragment{
                                 e.printStackTrace();
                                 message += "Something wrong!\n" + e.toString() + "\n";
                             }
-                        }}
+                        }
+                    }
+
                     @Override
                     public void run() {
                         try {
@@ -84,7 +95,7 @@ public class ServerFragment extends Fragment{
 
                             while (true) {
                                 Socket socket = serverSocket.accept();
-                                Log.i("e","socket accepted");
+                                Log.i("e", "socket accepted");
                                 count++;
                                 message += "#" + count + " from "
                                         + socket.getInetAddress() + ":"
@@ -114,8 +125,41 @@ public class ServerFragment extends Fragment{
                     /*
                     set up send for udp
                      */
+                new Thread(new Runnable() {
+                    int count = 0;
+                    LinkedList totalPackets = new LinkedList();
+
+                    @Override
+                    public void run() {
+                        try {
+                            Log.i("Serv", "You are opening a server port");
+                            DatagramSocket sk = new DatagramSocket(socketServerPORT, InetAddress.getByName(tcpServer.getIpAddress()));
+                            sk.setSoTimeout(500);
+                            // buffer
+                            byte[] buf = new byte[100];
+                            DatagramPacket dgp = new DatagramPacket(buf, buf.length);
+
+                            for (int i = 0; i < 10; i++) {
+                                try {
+                                    while (true) {
+                                        sk.receive(dgp);
+                                        count++;
+                                    }
+                                }
+                                catch (SocketTimeoutException e) {
+                                    totalPackets.push(count);
+                                }
+                                count = 0;
+                            }
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
+
         return view;
     }
 
