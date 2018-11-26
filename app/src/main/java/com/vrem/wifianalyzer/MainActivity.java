@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity); //sets the content of the screen on to the main activity layout
-
         settings.registerOnSharedPreferenceChangeListener(this);
 
         setOptionMenu(new OptionMenu());
@@ -102,6 +101,7 @@ public class MainActivity extends AppCompatActivity
 
         ConnectionView connectionView = new ConnectionView(this);
         mainContext.getScannerService().register(connectionView);
+
     }
 
     @Override
