@@ -18,9 +18,10 @@ import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ClientFragment extends Fragment {
+public class ClientFragment extends Fragment implements tcpinterface{
     private static final int PICKFILE_RESULT_CODE = 8778;
     private String file = null;
+    TextView finish;
     @Nullable
     @Override
     public View onCreateView(@NonNull  LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class ClientFragment extends Fragment {
         EditText ip = view.findViewById(R.id.address);
         final String realip =ip.getText().toString();
         Button button = view.findViewById(R.id.FiletoSend);
-
+        finish=view.findViewById(R.id.finishedtext);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,11 +44,8 @@ public class ClientFragment extends Fragment {
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(file == null){
-                    //do nothing here
-                } else{
-                    new ClientAdapter().execute(file,realip);
-                }
+                    new ClientAdapter(ClientFragment.this).execute(file,realip);
+
             }
         });
         Button button2 = view.findViewById(R.id.Submitudp);
@@ -76,5 +74,10 @@ public class ClientFragment extends Fragment {
                 file=Data.getData().getPath();
             }
         }
+    }
+
+    @Override
+    public void publish_results(String test) {
+        finish.setText(test);
     }
 }

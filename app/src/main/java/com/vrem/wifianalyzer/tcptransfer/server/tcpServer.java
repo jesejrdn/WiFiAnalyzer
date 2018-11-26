@@ -19,10 +19,10 @@ import java.util.Enumeration;
 public class tcpServer  {
 
 
-    private String message = "";
+  private String message = "";
     private static final int socketServerPORT = 8080;
 
-    public void send() {
+        /*public void send() {
         ServerSocket serverSocket;
         int count = 0;
 
@@ -45,7 +45,7 @@ public class tcpServer  {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
+    }*/
 
 
     public int getPort() {
@@ -64,39 +64,7 @@ public class tcpServer  {
     }
 
 
-    public class SocketServerReplyThread extends Thread {
 
-        private Socket hostThreadSocket;
-        int cnt;
-
-        SocketServerReplyThread(Socket socket, int c) {
-            hostThreadSocket = socket;
-            cnt = c;
-        }
-
-        @Override
-        public void run() {
-            OutputStream outputStream;
-            String msgReply = "Hello from Server, you are #" + cnt;
-
-            try {
-                outputStream = hostThreadSocket.getOutputStream();
-                PrintStream printStream = new PrintStream(outputStream);
-                printStream.print(msgReply);
-                printStream.close();
-
-                message += "replayed: " + msgReply + "\n";
-
-
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                message += "Something wrong!\n" + e.toString() + "\n";
-            }
-
-        }
-
-    }
 
     public static String getIpAddress() {
         String ip = "";

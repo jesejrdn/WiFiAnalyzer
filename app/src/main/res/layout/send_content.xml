@@ -56,6 +56,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/Ping"
         android:text="@string/Ping"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:id="@+id/finishedtext"
+        />
 
 
 </LinearLayout>
