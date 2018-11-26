@@ -1,6 +1,7 @@
 package com.vrem.wifianalyzer.tcptransfer.client;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +17,7 @@ public class ClientAdapter extends AsyncTask<String,Void,String> {
     }
     @Override
     protected void onPreExecute(){
+        Log.e("IN", "ONPRE EXECUTE");
         tcp.publish_results("ey a file is being transfered");
     }
     private  final int socketServerPORT = 8080;

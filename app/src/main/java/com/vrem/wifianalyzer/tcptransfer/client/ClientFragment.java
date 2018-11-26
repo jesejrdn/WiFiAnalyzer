@@ -1,10 +1,12 @@
 
 package com.vrem.wifianalyzer.tcptransfer.client;
+
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,11 @@ import android.widget.TextView;
 import com.vrem.wifianalyzer.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -42,9 +49,38 @@ public class ClientFragment extends Fragment implements tcpinterface{
         });
         Button button1 = view.findViewById(R.id.Submittcp);
         button1.setOnClickListener(new View.OnClickListener(){
+            /* supposed to execute the file transfer but it doesn't?*/
             @Override
             public void onClick(View view) {
-                    new ClientAdapter(ClientFragment.this).execute(file,realip);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            byte[] fileInBytes= new byte[4096];
+                            int count;
+                            try {
+                                /*
+                                 * create data inputs for the tcp client to read and write data to other person
+                                 */
+                                Socket client= new Socket(realip,8080);
+                                File sending=new File(file);
+                                InputStream input=new FileInputStream(sending);
+                                OutputStream output = client.getOutputStream();
+                                while((count=input.read(fileInBytes))>0){
+            /*
+            send the data over in chunks
+             */
+                                    output.write(fileInBytes,0,count);
+                                    finish.setText("yeet");
+                                }
+                                output.close();
+                                input.close();
+                                client.close();
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
 
             }
         });
