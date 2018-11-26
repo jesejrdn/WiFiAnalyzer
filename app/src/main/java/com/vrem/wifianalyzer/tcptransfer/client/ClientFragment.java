@@ -19,10 +19,10 @@ import com.vrem.wifianalyzer.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import static android.app.Activity.RESULT_OK;
@@ -31,16 +31,17 @@ public class ClientFragment extends Fragment implements tcpinterface {
     private static final int PICKFILE_RESULT_CODE = 8778;
     private String file = null;
     private int samplingCount = 1;
-    TextView finish;
+    private Button button1;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.send_content, container, false);
-        EditText ip = view.findViewById(R.id.address);
-        final String realip = ip.getText().toString();
+
+        final EditText ip = view.findViewById(R.id.address);
         Button button = view.findViewById(R.id.FiletoSend);
-        finish = view.findViewById(R.id.finishedtext);
+        final TextView finish = view.findViewById(R.id.finishedtext);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,11 +53,16 @@ public class ClientFragment extends Fragment implements tcpinterface {
             }
         });
 
-        Button button1 = view.findViewById(R.id.Submittcp);
+        button1 = view.findViewById(R.id.Submittcp);
         button1.setOnClickListener(new View.OnClickListener() {
+
             /* supposed to execute the file transfer but it doesn't?*/
+
             @Override
             public void onClick(View view) {
+
+                final String realip = ip.getText().toString();
+                finish.setText(realip);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -66,34 +72,41 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             /*
                              * create data inputs for the tcp client to read and write data to other person
                              */
+                            Log.i("IN", realip);
                             Socket client = new Socket(realip, 8080);
+                            Log.i("IN", "message");
                             File sending = new File(file);
-                            InputStream input = new FileInputStream(sending);
+                            FileInputStream input = new FileInputStream(sending);
                             OutputStream output = client.getOutputStream();
+
                             while ((count = input.read(fileInBytes)) > 0) {
                                 /*
                                 send the data over in chunks
                                  */
                                 output.write(fileInBytes, 0, count);
-                                finish.setText("yeet");
+                                Log.i("INT", "data being sent");
                             }
                             output.close();
                             input.close();
                             client.close();
+                            Log.e("CLIENT", "FINISHED SUCCESSFULLY");
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
                 }).start();
-
             }
         });
 
         Button button2 = view.findViewById(R.id.Submitudp);
-        button2.setOnClickListener(new View.OnClickListener() {
+        button2.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
+                final String realip = ip.getText().toString();
+                finish.setText(realip);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -114,7 +127,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             for (int i = 0; i < samplingCount; i++) {
                                 FileInputStream input = new FileInputStream(sending);
                                 while (input.read(buf) != -1) {
-                                    packet = new DatagramPacket(buf, buf.length, serverIp, PORT);
+                                    packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(realip), PORT);
                                     client.send(packet);
                                 }
                                 Thread.sleep(5000);
@@ -152,6 +165,6 @@ public class ClientFragment extends Fragment implements tcpinterface {
 
     @Override
     public void publish_results(String test) {
-        finish.setText(test);
+
     }
 }
