@@ -66,9 +66,9 @@ public class ClientFragment extends Fragment implements tcpinterface{
                                 InputStream input=new FileInputStream(sending);
                                 OutputStream output = client.getOutputStream();
                                 while((count=input.read(fileInBytes))>0){
-            /*
-            send the data over in chunks
-             */
+                                /*
+                                send the data over in chunks
+                                 */
                                     output.write(fileInBytes,0,count);
                                     finish.setText("yeet");
                                 }
