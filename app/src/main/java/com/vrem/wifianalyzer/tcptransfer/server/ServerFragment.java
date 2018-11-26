@@ -134,7 +134,7 @@ public class ServerFragment extends Fragment {
                         try {
                             Log.i("Serv", "You are opening a server port");
                             DatagramSocket sk = new DatagramSocket(socketServerPORT, InetAddress.getByName(tcpServer.getIpAddress()));
-                            sk.setSoTimeout(500);
+                            sk.setSoTimeout(900);
                             // buffer
                             byte[] buf = new byte[100];
                             DatagramPacket dgp = new DatagramPacket(buf, buf.length);
