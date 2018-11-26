@@ -8,14 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.vrem.wifianalyzer.R;
 import com.vrem.wifianalyzer.tcptransfer.server.tcpServer;
 
 import org.w3c.dom.Text;
 
-public class ServerFragment extends Fragment {
-
+public class ServerFragment extends Fragment implements tcpinterface {
+        TextView wait;
+        ProgressBar prog;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,6 +25,8 @@ public class ServerFragment extends Fragment {
         Button receive_button = view.findViewById(R.id.tcp_receive);
         Button udp_receive = view.findViewById(R.id.udp_receive);
         final TextView IPaddress=view.findViewById(R.id.ipaddr);
+        wait=view.findViewById(R.id.waitingId);
+        prog=view.findViewById(R.id.progbar);
 
         receive_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,4 +60,9 @@ public class ServerFragment extends Fragment {
             });
         return view;
     }
+
+    @Override
+    public void publish_results(String test) {
+        wait.setText(test);
     }
+}
