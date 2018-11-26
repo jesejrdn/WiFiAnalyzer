@@ -20,6 +20,7 @@ package com.vrem.wifianalyzer.wifi.timegraph;
 
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
 import com.jjoe64.graphview.GraphView;
@@ -55,6 +56,7 @@ class TimeGraphView implements GraphViewNotifier {
 
     @Override
     public void update(@NonNull WiFiData wiFiData) {
+        Log.d("TimeGraph", "Update func of time graph view");
         Settings settings = MainContext.INSTANCE.getSettings();
         Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings);
         List<WiFiDetail> wiFiDetails = wiFiData.getWiFiDetails(predicate, settings.getSortBy());
@@ -62,11 +64,6 @@ class TimeGraphView implements GraphViewNotifier {
         graphViewWrapper.removeSeries(newSeries);
         graphViewWrapper.updateLegend(settings.getTimeGraphLegend());
         graphViewWrapper.setVisibility(isSelected() ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void update(@NonNull PingData pingData) {
-
     }
 
     private boolean isSelected() {

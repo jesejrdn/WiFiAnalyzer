@@ -31,6 +31,7 @@ public class PingGraphView implements GraphViewNotifier {
     private PingDataManager pingDataManager;
     private GraphViewWrapper graphViewWrapper;
 
+
     PingGraphView(@NonNull WiFiBand wiFiBand) {
         this.wiFiBand = wiFiBand;
         this.graphViewWrapper = makeGraphViewWrapper();
@@ -38,10 +39,10 @@ public class PingGraphView implements GraphViewNotifier {
     }
 
     @Override
-    public void update(@NonNull PingData pingData) {
+    public void update(@NonNull WiFiData wiFiData) {
         Settings settings = MainContext.INSTANCE.getSettings();
         Log.d("PING", "Starting Ping");
-
+        PingData pingData = new PingData();
         pingData.setOnPingListener(new PingData.OnPingListener() {
             @Override
             public void onPingSuccess() {
@@ -50,18 +51,18 @@ public class PingGraphView implements GraphViewNotifier {
 
             @Override
             public void onPingFailure() {
-                Log.d("FAILURE", "onPingSuccess: FAILURE");
+                Log.d("FAILURE", "onPingFailure: FAILURE");
 
             }
 
             @Override
             public void onPingFinish() {
-                Log.d("FINISH", "onPingSuccess: FINISH");
+                Log.d("FINISH", "onPingFinish: FINISH");
 
             }
         });
 
-        pingData.pingUntilFailed("google.com", 5000);
+        pingData.pingUntilFailed("8.8.8.8", 5000);
 
         //TODO: May just remove these three lines and get a list of ping detailes?
 //        Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings);
@@ -85,11 +86,6 @@ public class PingGraphView implements GraphViewNotifier {
     @NonNull
     public GraphView getGraphView() {
         return graphViewWrapper.getGraphView();
-    }
-
-    @Override
-    public void update(@NonNull WiFiData wiFiData) {
-
     }
 
     private int getNumX() {

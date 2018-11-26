@@ -1,6 +1,13 @@
 package com.vrem.wifianalyzer.wifi.model;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Locale;
+
+import static java.lang.String.*;
 
 public class PingData {
 
@@ -17,11 +24,21 @@ public class PingData {
     }
 
     public boolean ping(String destination, int timeoutInSeconds) throws InterruptedException {
+        String inputLine;
+        double avgRtt = 0;
         try {
-            String command = String.format("/system/bin/ping -c 3 -W %d %s", timeoutInSeconds, destination);
+            String command = format(Locale.US, "/system/bin/ping -c 3 -W %d %s", timeoutInSeconds, destination);
             Process process = runtime.exec(command);
             int ret = process.waitFor();
             process.destroy();
+            BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder total = new StringBuilder();
+            for (String line; (line = r.readLine()) != null; ) {
+                Log.d("Process", "IN FOR LOOP");
+
+                total.append(line).append('\n');
+            }
+            Log.d("Process", total.toString());
             return ret == 0;
         } catch (IOException e) {
             e.printStackTrace();

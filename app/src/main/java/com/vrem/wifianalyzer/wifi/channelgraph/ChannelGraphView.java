@@ -73,11 +73,6 @@ class ChannelGraphView implements GraphViewNotifier {
         graphViewWrapper.setVisibility(isSelected() ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void update(@NonNull PingData pingData) {
-
-    }
-
     private boolean isSelected() {
         Settings settings = MainContext.INSTANCE.getSettings();
         WiFiBand currentWiFiBand = settings.getWiFiBand();

@@ -30,5 +30,4 @@ public interface GraphViewNotifier {
     GraphView getGraphView();
 
     void update(@NonNull WiFiData wiFiData);
-    void update(@NonNull PingData pingData);
 }
