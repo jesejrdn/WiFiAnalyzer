@@ -132,7 +132,7 @@ public class ServerFragment extends Fragment {
                     @Override
                     public void run() {
                         try {
-                            Log.i("Serv", "You are opening a server port");
+                            Log.d("Serv", "You are opening a server port");
                             DatagramSocket sk = new DatagramSocket(socketServerPORT);
                             sk.setSoTimeout(900);
                             // buffer
@@ -153,6 +153,7 @@ public class ServerFragment extends Fragment {
                                 }
                                 count = 0;
                             }
+                            sk.close();
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
