@@ -69,9 +69,11 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:text="test" />
+
     <com.jjoe64.graphview.GraphView
-        android:id="@+id/udp_graph"
+        android:id="@+id/tcp_graph"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:visibility="invisible" />
 </LinearLayout>
 </ScrollView>
