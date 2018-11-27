@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,44 +14,66 @@
         android:textStyle="bold" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/tcp_receive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/tcpreceive"/>
+        android:text="@string/tcpreceive" />
+
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/udp_receive"
-        android:layout_marginTop="20dp"
-        android:text="@string/udprecieve"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:text="@string/udprecieve" />
+
+    <TextView
         android:id="@+id/ipaddr"
-        android:layout_gravity="center"
-        android:visibility="invisible"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:id="@+id/waitingId"
-        android:layout_gravity="center"/>
+        android:visibility="invisible" />
+
     <TextView
+        android:id="@+id/waitingId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/Reciving_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Reciving_file"
         android:layout_gravity="center_horizontal"
-        android:visibility="invisible"
-        android:text="@string/file"/>
+        android:text="@string/file"
+        android:visibility="invisible" />
+
     <ProgressBar
-        android:layout_width="300dp"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
         android:id="@+id/progbar"
-        android:visibility="invisible"
         style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:progress="0"
-        />
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/packet_ratio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/packets_lost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/percent_lost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
 </LinearLayout>

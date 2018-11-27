@@ -20,13 +20,9 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class ServerFragment extends Fragment {
     TextView wait;
@@ -41,6 +37,9 @@ public class ServerFragment extends Fragment {
         Button receive_button = view.findViewById(R.id.tcp_receive);
         Button udp_receive = view.findViewById(R.id.udp_receive);
         final TextView IPaddress = view.findViewById(R.id.ipaddr);
+        final TextView packetRatio = view.findViewById(R.id.packet_ratio);
+        final TextView packetsLost = view.findViewById(R.id.packets_lost);
+        final TextView percentLost = view.findViewById(R.id.percent_lost);
         wait = view.findViewById(R.id.waitingId);
         prog = view.findViewById(R.id.progbar);
         receive_button.setOnClickListener(new View.OnClickListener() {
@@ -126,33 +125,66 @@ public class ServerFragment extends Fragment {
                     set up send for udp
                      */
                 new Thread(new Runnable() {
-                    int count = 0;
-                    LinkedList totalPackets = new LinkedList();
+                    double totalPackets = 1853;
+                    double packetCount = 0;
+                    String packetRatioString = "";
+
+                    double totalPacketsLost = 0;
+                    String totalPacketsLostString = "";
+
+                    double packetLossPercentage = 0.0000;
+                    String packetLossPercentString = "";
 
                     @Override
                     public void run() {
                         try {
                             Log.d("Serv", "You are opening a server port");
                             DatagramSocket sk = new DatagramSocket(socketServerPORT);
-                            sk.setSoTimeout(5000);
+                            sk.setSoTimeout(10000);
                             // buffer
                             byte[] buf = new byte[100];
                             DatagramPacket dgp = new DatagramPacket(buf, buf.length);
                             Log.d("Setup", "Created datagram socket and packet");
-//                            for (int i = 0; i < 10; i++) {
-                                try {
-                                    while (true) {
-                                        sk.receive(dgp);
-                                        count++;
+                            try {
+                                while (true) {
+                                    sk.receive(dgp);
+                                    packetCount++;
+                                }
+                            } catch (SocketTimeoutException e) {
+                                Log.d("UDP SERVER TIMEOUT", "timeout catch block");
+                                Log.d("PACKET COUNT", "count:" + packetCount);
+
+
+                                packetRatioString = "Packet Ratio: " + packetCount + "/" + totalPackets + " Packets Received";
+
+                                packetRatio.post(new Runnable() {
+                                    public void run() {
+                                        packetRatio.setText(packetRatioString);
+                                        packetRatio.setVisibility(View.VISIBLE);
                                     }
-                                }
-                                catch (SocketTimeoutException e) {
-                                    Log.d("UDP SERVER TIMEOUT", "timeout catch block");
-                                    totalPackets.push(count);
-                                    Log.d("PACKET COUNT", "count:"+count);
-                                }
-                                count = 0;
-//                            }
+                                });
+
+                                totalPacketsLost = totalPackets - packetCount;
+                                totalPacketsLost = ((int) totalPacketsLost);
+                                totalPacketsLostString = "Total Packets Lost: " + totalPacketsLost + " Packets";
+
+                                packetsLost.post(new Runnable() {
+                                    public void run() {
+                                        packetsLost.setText(totalPacketsLostString);
+                                        packetsLost.setVisibility(View.VISIBLE);
+                                    }
+                                });
+
+                                packetLossPercentage = (1.00 - (packetCount / totalPackets)) * 100.00;
+                                packetLossPercentage = ((int) packetLossPercentage);
+                                packetLossPercentString = "Percent of Packets Lost: " + packetLossPercentage + "%";
+                                percentLost.post(new Runnable() {
+                                    public void run() {
+                                        percentLost.setText(packetLossPercentString);
+                                        percentLost.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                            }
                             sk.close();
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
