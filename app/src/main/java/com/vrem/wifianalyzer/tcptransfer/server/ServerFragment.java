@@ -50,6 +50,10 @@ public class ServerFragment extends Fragment {
         wait = view.findViewById(R.id.waitingId);
         prog = view.findViewById(R.id.progbar);
         final GraphView graph = (GraphView) view.findViewById(R.id.udp_graph);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(40);
+        graph.getViewport().setScrollable(true);
 
         receive_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,12 +139,9 @@ public class ServerFragment extends Fragment {
                 graph.removeAllSeries();
                 series = new LineGraphSeries<DataPoint>();
                 graph.addSeries(series);
-                graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMinX(0);
-                graph.getViewport().setMaxX(40);
-                graph.getViewport().setScrollable(true);
                 lastX = 0;
                 graph.setVisibility(View.VISIBLE);
+
                     /*
                     set up send for udp
                      */
