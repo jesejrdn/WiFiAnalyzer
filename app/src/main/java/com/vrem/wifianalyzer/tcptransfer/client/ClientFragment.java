@@ -113,7 +113,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                         byte[] fileInBytes = new byte[4096];
                         int count;
                         try {
-                            int PORT = 4000;
+                            int PORT = 8080;
 
                             // create socket
                             DatagramSocket client = new DatagramSocket();

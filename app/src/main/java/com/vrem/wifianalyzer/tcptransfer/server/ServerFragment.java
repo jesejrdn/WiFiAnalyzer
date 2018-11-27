@@ -100,7 +100,7 @@ public class ServerFragment extends Fragment {
                                 message += "#" + count + " from "
                                         + socket.getInetAddress() + ":"
                                         + socket.getPort() + "\n";
-
+                                Log.i("message", message);
                                 SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
                                         socket, count);
                                 socketServerReplyThread.run();
@@ -133,12 +133,12 @@ public class ServerFragment extends Fragment {
                     public void run() {
                         try {
                             Log.i("Serv", "You are opening a server port");
-                            DatagramSocket sk = new DatagramSocket(socketServerPORT, InetAddress.getByName(tcpServer.getIpAddress()));
+                            DatagramSocket sk = new DatagramSocket(socketServerPORT);
                             sk.setSoTimeout(900);
                             // buffer
                             byte[] buf = new byte[100];
                             DatagramPacket dgp = new DatagramPacket(buf, buf.length);
-
+                            Log.d("Setup", "Created datagram socket and packet");
                             for (int i = 0; i < 10; i++) {
                                 try {
                                     while (true) {
@@ -147,7 +147,9 @@ public class ServerFragment extends Fragment {
                                     }
                                 }
                                 catch (SocketTimeoutException e) {
+                                    Log.d("UDP SERVER TIMEOUT", "timeout catch block");
                                     totalPackets.push(count);
+                                    Log.d("PACKET COUNT", "count:"+count);
                                 }
                                 count = 0;
                             }
