@@ -153,7 +153,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 }
                                 Log.d("UDP Client", "SENT PACKET "+packetCount);
                                 input.close();
-                                Thread.sleep(3000);
+                                Thread.sleep(500);
                             }
                             client.close();
                             Log.d("UDP Client Closed", "End Transmission");

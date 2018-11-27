@@ -35,17 +35,12 @@
         android:layout_marginTop="20dp"
         android:visibility="invisible" />
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/udp_graph"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
     <TextView
         android:id="@+id/waitingId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:visibility="invisible" />
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/Reciving_file"
@@ -80,4 +75,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/udp_graph"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
 </LinearLayout>

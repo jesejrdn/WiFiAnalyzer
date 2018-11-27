@@ -44,11 +44,11 @@ public class ServerFragment extends Fragment {
         Button receive_button = view.findViewById(R.id.tcp_receive);
         Button udp_receive = view.findViewById(R.id.udp_receive);
         final TextView IPaddress = view.findViewById(R.id.ipaddr);
-        // final TextView packetRatio = view.findViewById(R.id.packet_ratio);
-        //  final TextView packetsLost = view.findViewById(R.id.packets_lost);
-        // final TextView percentLost = view.findViewById(R.id.percent_lost);
-        //wait = view.findViewById(R.id.waitingId);
-        //prog = view.findViewById(R.id.progbar);
+        final TextView packetRatio = view.findViewById(R.id.packet_ratio);
+        final TextView packetsLost = view.findViewById(R.id.packets_lost);
+        final TextView percentLost = view.findViewById(R.id.percent_lost);
+        wait = view.findViewById(R.id.waitingId);
+        prog = view.findViewById(R.id.progbar);
         final GraphView graph = (GraphView) view.findViewById(R.id.udp_graph);
         series = new LineGraphSeries<DataPoint>();
         graph.addSeries(series);
@@ -149,6 +149,7 @@ public class ServerFragment extends Fragment {
 
                     double packetLossPercentage = 0.0000;
                     String packetLossPercentString = "";
+                    boolean isfirst = true;
 
                     @Override
                     public void run() {
@@ -156,14 +157,21 @@ public class ServerFragment extends Fragment {
                         try {
                             Log.d("Serv", "You are opening a server port");
                             DatagramSocket sk = new DatagramSocket(socketServerPORT);
-                            sk.setSoTimeout(2000);
+                            sk.setSoTimeout(10000);
                             // buffer
                             byte[] buf = new byte[100];
                             DatagramPacket dgp = new DatagramPacket(buf, buf.length);
                             Log.d("Setup", "Created datagram socket and packet");
+                            sk.receive(dgp);
+                            packetCount++;
+
+                            sk.setSoTimeout(350);
+
                             for(int i = 0 ;i < 10; i++){
                                 try {
-                                    packetCount = 0;
+                                    if (!isfirst) {
+                                        packetCount = 0;
+                                    }
                                     while (true) {
                                         sk.receive(dgp);
                                         packetCount++;
@@ -173,35 +181,35 @@ public class ServerFragment extends Fragment {
                                     Log.d("PACKET COUNT", "count:" + packetCount);
 
 
-                                    //packetRatioString = "Packet Ratio: " + packetCount + "/" + totalPackets + " Packets Received";
+                                    packetRatioString = "Packet Ratio: " + packetCount + "/" + totalPackets + " Packets Received";
 
-                                /*packetRatio.post(new Runnable() {
+                                packetRatio.post(new Runnable() {
                                     public void run() {
                                         packetRatio.setText(packetRatioString);
                                         packetRatio.setVisibility(View.VISIBLE);
                                     }
-                                });*/
+                                });
 
                                     totalPacketsLost = totalPackets - packetCount;
-                                    //totalPacketsLost = ((int) totalPacketsLost);
-                                    //totalPacketsLostString = "Total Packets Lost: " + totalPacketsLost + " Packets";
+                                    totalPacketsLost = ((int) totalPacketsLost);
+                                    totalPacketsLostString = "Total Packets Lost: " + totalPacketsLost + " Packets";
 
-                                /*packetsLost.post(new Runnable() {
+                                packetsLost.post(new Runnable() {
                                     public void run() {
                                         packetsLost.setText(totalPacketsLostString);
                                         packetsLost.setVisibility(View.VISIBLE);
                                     }
-                                });*/
+                                });
 
                                     packetLossPercentage = (1.00 - (packetCount / totalPackets)) * 100.00;
-                                    //packetLossPercentage = ((int) packetLossPercentage);
-                                    //packetLossPercentString = "Percent of Packets Lost: " + packetLossPercentage + "%";
-                                /*percentLost.post(new Runnable() {
+                                    packetLossPercentage = ((int) packetLossPercentage);
+                                    packetLossPercentString = "Percent of Packets Lost: " + packetLossPercentage + "%";
+                                percentLost.post(new Runnable() {
                                     public void run() {
                                         percentLost.setText(packetLossPercentString);
                                         percentLost.setVisibility(View.VISIBLE);
                                     }
-                                });*/
+                                });
 
                                     graph.post(new Runnable() {
                                         @Override
@@ -209,6 +217,7 @@ public class ServerFragment extends Fragment {
                                             addEntry(packetLossPercentage);
                                         }
                                     });
+                                    isfirst = false;
 
                                 }
                             }
