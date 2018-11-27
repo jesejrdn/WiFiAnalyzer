@@ -74,6 +74,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                 final long timee;
                 new Thread(new Runnable() {
                     File sending;
+
                     @Override
                     public void run() {
                         byte[] fileInBytes = new byte[4096];
@@ -86,10 +87,10 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             Socket client = new Socket(realip, 8080);
                             Log.i("IN", "message");
 
-                            AssetManager asst=getActivity().getAssets();
+                            AssetManager asst = getActivity().getAssets();
                             InputStream input = asst.open("test.jpg");
                             OutputStream output = client.getOutputStream();
-                            long time=System.nanoTime();
+                            long time = System.nanoTime();
                             while ((count = input.read(fileInBytes)) > 0) {
                                 /*
                                 send the data over in chunks
@@ -97,8 +98,8 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 output.write(fileInBytes, 0, count);
                                 Log.i("INT", "data being sent");
                             }
-                            final long result=System.nanoTime()-time;
-                            Log.i("TIME TAKEN",Long.toString(result)+"ns");
+                            final long result = System.nanoTime() - time;
+                            Log.i("TIME TAKEN", Long.toString(result) + "ns");
                             output.close();
                             input.close();
                             client.close();
@@ -106,7 +107,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             finish.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    finish.setText(Long.toString(result)+"ns");
+                                    finish.setText(Long.toString(result) + "ns");
                                 }
                             });
                         } catch (IOException e) {
@@ -141,26 +142,22 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             byte[] buf = new byte[100];
 
                             DatagramPacket packet;
-                            AssetManager asst=getActivity().getAssets();
-                            for (int i = 0; i < 1; i++) {
+                            AssetManager asst = getActivity().getAssets();
 
-                                Log.d("UDP Client", "In for loop");
-                                InputStream input = asst.open("test.jpg");
-                                while (input.read(buf) != -1) {
-                                    packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(realip), PORT);
-                                    client.send(packet);
-                                    packetCount++;
-                                }
-                                Log.d("UDP Client", "SENT PACKET "+packetCount);
-                                input.close();
-                                Thread.sleep(1000);
+
+                            Log.d("UDP Client", "In for loop");
+                            InputStream input = asst.open("test.jpg");
+                            while (input.read(buf) != -1) {
+                                packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(realip), PORT);
+                                client.send(packet);
+                                packetCount++;
                             }
+                            Log.d("UDP Client", "SENT PACKET " + packetCount);
+                            input.close();
                             client.close();
                             Log.d("UDP Client Closed", "End Transmission");
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
@@ -187,6 +184,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
             }
         }
     }
+
     @Override
     public void publish_results(String test) {
 
