@@ -30,15 +30,22 @@ public class PingData {
             String command = format(Locale.US, "/system/bin/ping -c 3 -W %d %s", timeoutInSeconds, destination);
             Process process = runtime.exec(command);
             int ret = process.waitFor();
-            process.destroy();
-            BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
+            BufferedReader reader = new BufferedReader(inputStreamReader);
             StringBuilder total = new StringBuilder();
-            for (String line; (line = r.readLine()) != null; ) {
-                Log.d("Process", "IN FOR LOOP");
-
-                total.append(line).append('\n');
+            try {
+                String line;
+                while ((line = reader.readLine()) != null)
+                {
+                    Log.d("1:STR VALUE", line);
+                    total.append(line).append('\n');
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
             Log.d("Process", total.toString());
+            process.destroy();
             return ret == 0;
         } catch (IOException e) {
             e.printStackTrace();
