@@ -1,8 +1,13 @@
 
 package com.vrem.wifianalyzer.tcptransfer.client;
 
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,11 +24,15 @@ import com.vrem.wifianalyzer.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Timer;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,7 +50,6 @@ public class ClientFragment extends Fragment implements tcpinterface {
         final EditText ip = view.findViewById(R.id.address);
         Button button = view.findViewById(R.id.FiletoSend);
         final TextView finish = view.findViewById(R.id.finishedtext);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,8 +70,10 @@ public class ClientFragment extends Fragment implements tcpinterface {
             public void onClick(View view) {
 
                 final String realip = ip.getText().toString();
-                finish.setText(realip);
+//                finish.setText(realip);
+                final long timee;
                 new Thread(new Runnable() {
+                    File sending;
                     @Override
                     public void run() {
                         byte[] fileInBytes = new byte[4096];
@@ -75,10 +85,11 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             Log.i("IN", realip);
                             Socket client = new Socket(realip, 8080);
                             Log.i("IN", "message");
-                            File sending = new File(file);
-                            FileInputStream input = new FileInputStream(sending);
-                            OutputStream output = client.getOutputStream();
 
+                            AssetManager asst=getActivity().getAssets();
+                            InputStream input = asst.open("test.jpg");
+                            OutputStream output = client.getOutputStream();
+                            long time=System.nanoTime();
                             while ((count = input.read(fileInBytes)) > 0) {
                                 /*
                                 send the data over in chunks
@@ -86,10 +97,18 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 output.write(fileInBytes, 0, count);
                                 Log.i("INT", "data being sent");
                             }
+                            final long result=System.nanoTime()-time;
+                            Log.i("TIME TAKEN",Long.toString(result)+"ns");
                             output.close();
                             input.close();
                             client.close();
                             Log.e("CLIENT", "FINISHED SUCCESSFULLY");
+                            finish.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    finish.setText(Long.toString(result)+"ns");
+                                }
+                            });
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -158,11 +177,10 @@ public class ClientFragment extends Fragment implements tcpinterface {
             if (resultCode == RESULT_OK) {
                 TextView s = getView().findViewById(R.id.Filname);
                 s.setText(Data.getData().getPath());
-                file = Data.getData().getPath();
+                file = Data.getData().toString();
             }
         }
     }
-
     @Override
     public void publish_results(String test) {
 
