@@ -50,12 +50,6 @@ public class ServerFragment extends Fragment {
         wait = view.findViewById(R.id.waitingId);
         prog = view.findViewById(R.id.progbar);
         final GraphView graph = (GraphView) view.findViewById(R.id.udp_graph);
-        series = new LineGraphSeries<DataPoint>();
-        graph.addSeries(series);
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(40);
-        graph.getViewport().setScrollable(true);
 
         receive_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +130,17 @@ public class ServerFragment extends Fragment {
                 String IP = tcpServer.getIpAddress();
                 IPaddress.setText(IP);
                 IPaddress.setVisibility(View.VISIBLE);
+
+
+                graph.removeAllSeries();
+                series = new LineGraphSeries<DataPoint>();
+                graph.addSeries(series);
+                graph.getViewport().setXAxisBoundsManual(true);
+                graph.getViewport().setMinX(0);
+                graph.getViewport().setMaxX(40);
+                graph.getViewport().setScrollable(true);
+                lastX = 0;
+                graph.setVisibility(View.VISIBLE);
                     /*
                     set up send for udp
                      */
@@ -150,6 +155,9 @@ public class ServerFragment extends Fragment {
                     double packetLossPercentage = 0.0000;
                     String packetLossPercentString = "";
                     boolean isfirst = true;
+
+
+
 
                     @Override
                     public void run() {
