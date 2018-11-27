@@ -55,6 +55,7 @@ public class ServerFragment extends Fragment {
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(40);
+        graph.getViewport().setScrollable(true);
 
         receive_button.setOnClickListener(new View.OnClickListener() {
             @Override
