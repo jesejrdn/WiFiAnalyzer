@@ -142,7 +142,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
 
                             DatagramPacket packet;
                             AssetManager asst=getActivity().getAssets();
-                            for (int i = 0; i < samplingCount; i++) {
+                            for (int i = 0; i < 1; i++) {
 
                                 Log.d("UDP Client", "In for loop");
                                 InputStream input = asst.open("test.jpg");
@@ -150,8 +150,8 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                     packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(realip), PORT);
                                     client.send(packet);
                                     packetCount++;
-                                    Log.d("UDP Client", "SENT PACKET "+packetCount);
                                 }
+                                Log.d("UDP Client", "SENT PACKET "+packetCount);
                                 input.close();
                                 Thread.sleep(1000);
                             }

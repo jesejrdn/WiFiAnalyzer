@@ -134,12 +134,12 @@ public class ServerFragment extends Fragment {
                         try {
                             Log.d("Serv", "You are opening a server port");
                             DatagramSocket sk = new DatagramSocket(socketServerPORT);
-                            sk.setSoTimeout(900);
+                            sk.setSoTimeout(5000);
                             // buffer
                             byte[] buf = new byte[100];
                             DatagramPacket dgp = new DatagramPacket(buf, buf.length);
                             Log.d("Setup", "Created datagram socket and packet");
-                            for (int i = 0; i < 10; i++) {
+//                            for (int i = 0; i < 10; i++) {
                                 try {
                                     while (true) {
                                         sk.receive(dgp);
@@ -152,7 +152,7 @@ public class ServerFragment extends Fragment {
                                     Log.d("PACKET COUNT", "count:"+count);
                                 }
                                 count = 0;
-                            }
+//                            }
                             sk.close();
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
