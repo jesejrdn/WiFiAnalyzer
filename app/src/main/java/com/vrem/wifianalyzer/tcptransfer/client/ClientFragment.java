@@ -39,21 +39,21 @@ public class ClientFragment extends Fragment implements tcpinterface {
         View view = inflater.inflate(R.layout.send_content, container, false);
 
         final EditText ip = view.findViewById(R.id.address);
-        Button button = view.findViewById(R.id.FiletoSend);
+//        Button button = view.findViewById(R.id.FiletoSend);
 
         final TextView oneWayLatency = view.findViewById(R.id.latency);
         final TextView oneWaythroughput = view.findViewById(R.id.throughput);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inte = new Intent(Intent.ACTION_GET_CONTENT);
-                inte.setType("*/*");
-                inte = Intent.createChooser(inte, "Choose a file");
-                startActivityForResult(inte, PICKFILE_RESULT_CODE);
-
-            }
-        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent inte = new Intent(Intent.ACTION_GET_CONTENT);
+//                inte.setType("*/*");
+//                inte = Intent.createChooser(inte, "Choose a file");
+//                startActivityForResult(inte, PICKFILE_RESULT_CODE);
+//
+//            }
+//        });
 
         button1 = view.findViewById(R.id.Submittcp);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +97,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             double sr=result;
                             double sresult =(sr/ 1000000000);
                             Log.i("TIME TAKEN", Long.toString(result) + "s");
-                            throughput = 1.16 / sresult;
+                            throughput = 1.24 / sresult;
                             output.close();
                             input.close();
                             client.close();
@@ -186,8 +186,8 @@ public class ClientFragment extends Fragment implements tcpinterface {
     public void onActivityResult(int requestCode, int resultCode, Intent Data) {
         if (requestCode == PICKFILE_RESULT_CODE) {
             if (resultCode == RESULT_OK) {
-                TextView s = getView().findViewById(R.id.Filname);
-                s.setText(Data.getData().getPath());
+//                TextView s = getView().findViewById(R.id.Filname);
+//                s.setText(Data.getData().getPath());
 //                file = Data.getData().toString();
             }
         }
