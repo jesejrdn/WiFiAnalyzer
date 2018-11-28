@@ -251,6 +251,6 @@ public class ServerFragment extends Fragment {
     // add data to graph
     private void addEntry(double packetLossPercentage) {
         // here, we choose to display max 10 points on the viewport and we scroll to end
-        series.appendData(new DataPoint(lastX++, packetLossPercentage), false, 100);
+        series.appendData(new DataPoint(lastX++, packetLossPercentage), false, 15);
     }
 }

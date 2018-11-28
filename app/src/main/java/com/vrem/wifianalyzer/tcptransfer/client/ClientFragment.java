@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.vrem.wifianalyzer.R;
 
 import java.io.File;
@@ -32,6 +36,7 @@ import static android.app.Activity.RESULT_OK;
 public class ClientFragment extends Fragment implements tcpinterface {
     private static final int PICKFILE_RESULT_CODE = 8778;
     private Button button1;
+    private LineGraphSeries<DataPoint> series;
 
     @Nullable
     @Override
@@ -43,6 +48,27 @@ public class ClientFragment extends Fragment implements tcpinterface {
 
         final TextView oneWayLatency = view.findViewById(R.id.latency);
         final TextView oneWaythroughput = view.findViewById(R.id.throughput);
+
+        final GraphView graph = (GraphView) view.findViewById(R.id.tcp_graph);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setScrollable(true);
+
+        graph.removeAllSeries();
+        series = new LineGraphSeries<DataPoint>();
+        graph.addSeries(series);
+        graph.setTitle("Throughput vs. Latency");
+
+        GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
+        gridLabel.setHorizontalAxisTitle("One Way Latency (s)");
+        gridLabel.setVerticalAxisTitle("Throughput (MBs/s)");
+
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(15);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(5);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setXAxisBoundsManual(true);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,17 +89,22 @@ public class ClientFragment extends Fragment implements tcpinterface {
             @Override
             public void onClick(View view) {
 
+                graph.setVisibility(View.VISIBLE);
                 final String realip = ip.getText().toString();
                 final long timee;
                 new Thread(new Runnable() {
                     File sending;
+                    double sresult = 0;
+                    double throughput = 0;
+                    String latencyString = "";
+                    String throughputString = "";
 
                     @Override
                     public void run() {
                         byte[] fileInBytes = new byte[100];
                         int count;
 
-                        double throughput = 0;
+
                         try {
                             /*
                              * create data inputs for the tcp client to read and write data to other person
@@ -94,8 +125,8 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 Log.i("INT", "data being sent");
                             }
                             long result = System.nanoTime() - time;
-                            double sr=result;
-                            double sresult =(sr/ 1000000000);
+                            double sr = result;
+                            sresult = (sr / 1000000000);
                             Log.i("TIME TAKEN", Long.toString(result) + "s");
                             throughput = 1.16 / sresult;
                             output.close();
@@ -103,8 +134,8 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             client.close();
                             Log.e("CLIENT", "FINISHED SUCCESSFULLY");
 
-                            final String latencyString = Double.toString(sresult);
-                            final String throughputString = Double.toString(throughput);
+                            latencyString = Double.toString(sresult);
+                            throughputString = Double.toString(throughput);
 
                             oneWayLatency.post(new Runnable() {
                                 @Override
@@ -116,8 +147,15 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             oneWaythroughput.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    oneWaythroughput.setText("Throughput: " + throughputString+ "Mbs");
+                                    oneWaythroughput.setText("Throughput: " + throughputString + "Mbs");
                                     oneWaythroughput.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+                            graph.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addEntry(sresult, throughput);
                                 }
                             });
                         } catch (IOException e) {
@@ -175,6 +213,11 @@ public class ClientFragment extends Fragment implements tcpinterface {
         });
         return view;
 
+    }
+
+    // add data to graph
+    private void addEntry(double oneWayLatency, double throughput) {
+        series.appendData(new DataPoint(oneWayLatency, throughput), false, 15);
     }
 
     @Override
