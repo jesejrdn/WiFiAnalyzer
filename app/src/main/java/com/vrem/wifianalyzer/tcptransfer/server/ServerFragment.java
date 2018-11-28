@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.vrem.wifianalyzer.R;
 
 import java.io.BufferedReader;
@@ -50,13 +51,31 @@ public class ServerFragment extends Fragment {
         final TextView packetRatio = view.findViewById(R.id.packet_ratio);
         final TextView packetsLost = view.findViewById(R.id.packets_lost);
         final TextView percentLost = view.findViewById(R.id.percent_lost);
-        wait = view.findViewById(R.id.waitingId);
-        prog = view.findViewById(R.id.progbar);
+
         final GraphView graph = (GraphView) view.findViewById(R.id.udp_graph);
         graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(40);
         graph.getViewport().setScrollable(true);
+
+        graph.removeAllSeries();
+        series = new LineGraphSeries<DataPoint>();
+        graph.addSeries(series);
+        lastX = 0;
+        graph.setTitle("UDP Packet Loss");
+
+        GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
+        gridLabel.setHorizontalAxisTitle("Files Sent");
+        gridLabel.setVerticalAxisTitle("Percentage Packets Lost");
+
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(15);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(100);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setXAxisBoundsManual(true);
+
+        wait = view.findViewById(R.id.waitingId);
+        prog = view.findViewById(R.id.progbar);
+
 
         receive_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,23 +156,13 @@ public class ServerFragment extends Fragment {
         udp_receive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    /*
-                    udp click
-                     */
+
                 String IP = tcpServer.getIpAddress();
                 IPaddress.setText(IP);
                 IPaddress.setVisibility(View.VISIBLE);
-
-
-                graph.removeAllSeries();
-                series = new LineGraphSeries<DataPoint>();
-                graph.addSeries(series);
-                lastX = 0;
                 graph.setVisibility(View.VISIBLE);
 
-                    /*
-                    set up send for udp
-                     */
+
                 new Thread(new Runnable() {
                     double totalPackets = 1853;
                     double packetCount = 0;
@@ -164,10 +173,6 @@ public class ServerFragment extends Fragment {
 
                     double packetLossPercentage = 0.0000;
                     String packetLossPercentString = "";
-                    boolean isfirst = true;
-
-
-
 
                     @Override
                     public void run() {
@@ -175,21 +180,14 @@ public class ServerFragment extends Fragment {
                         try {
                             Log.d("Serv", "You are opening a server port");
                             DatagramSocket sk = new DatagramSocket(socketServerPORT);
-                            sk.setSoTimeout(10000);
-                            // buffer
+                            sk.setSoTimeout(2000);
                             byte[] buf = new byte[100];
                             DatagramPacket dgp = new DatagramPacket(buf, buf.length);
                             Log.d("Setup", "Created datagram socket and packet");
-                            sk.receive(dgp);
-                            packetCount++;
 
-                            sk.setSoTimeout(350);
-
-                            for(int i = 0 ;i < 100; i++){
+                            for (int i = 0; i < 15; i++) {
+                                packetCount = 0;
                                 try {
-                                    if (!isfirst) {
-                                        packetCount = 0;
-                                    }
                                     while (true) {
                                         sk.receive(dgp);
                                         packetCount++;
@@ -201,33 +199,33 @@ public class ServerFragment extends Fragment {
 
                                     packetRatioString = "Packet Ratio: " + packetCount + "/" + totalPackets + " Packets Received";
 
-                                packetRatio.post(new Runnable() {
-                                    public void run() {
-                                        packetRatio.setText(packetRatioString);
-                                        packetRatio.setVisibility(View.VISIBLE);
-                                    }
-                                });
+                                    packetRatio.post(new Runnable() {
+                                        public void run() {
+                                            packetRatio.setText(packetRatioString);
+                                            packetRatio.setVisibility(View.VISIBLE);
+                                        }
+                                    });
 
                                     totalPacketsLost = totalPackets - packetCount;
                                     totalPacketsLost = ((int) totalPacketsLost);
                                     totalPacketsLostString = "Total Packets Lost: " + totalPacketsLost + " Packets";
 
-                                packetsLost.post(new Runnable() {
-                                    public void run() {
-                                        packetsLost.setText(totalPacketsLostString);
-                                        packetsLost.setVisibility(View.VISIBLE);
-                                    }
-                                });
+                                    packetsLost.post(new Runnable() {
+                                        public void run() {
+                                            packetsLost.setText(totalPacketsLostString);
+                                            packetsLost.setVisibility(View.VISIBLE);
+                                        }
+                                    });
 
                                     packetLossPercentage = (1.00 - (packetCount / totalPackets)) * 100.00;
                                     packetLossPercentage = ((int) packetLossPercentage);
                                     packetLossPercentString = "Percent of Packets Lost: " + packetLossPercentage + "%";
-                                percentLost.post(new Runnable() {
-                                    public void run() {
-                                        percentLost.setText(packetLossPercentString);
-                                        percentLost.setVisibility(View.VISIBLE);
-                                    }
-                                });
+                                    percentLost.post(new Runnable() {
+                                        public void run() {
+                                            percentLost.setText(packetLossPercentString);
+                                            percentLost.setVisibility(View.VISIBLE);
+                                        }
+                                    });
 
                                     graph.post(new Runnable() {
                                         @Override
@@ -235,11 +233,8 @@ public class ServerFragment extends Fragment {
                                             addEntry(packetLossPercentage);
                                         }
                                     });
-                                    isfirst = false;
-
                                 }
                             }
-
                             sk.close();
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
@@ -252,9 +247,10 @@ public class ServerFragment extends Fragment {
 
         return view;
     }
+
     // add data to graph
     private void addEntry(double packetLossPercentage) {
         // here, we choose to display max 10 points on the viewport and we scroll to end
-        series.appendData(new DataPoint(lastX++, packetLossPercentage), true, 10);
+        series.appendData(new DataPoint(lastX++, packetLossPercentage), false, 100);
     }
 }

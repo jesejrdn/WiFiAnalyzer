@@ -140,8 +140,6 @@ public class ClientFragment extends Fragment implements tcpinterface {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        byte[] fileInBytes = new byte[4096];
-                        int packetCount = 0;
                         try {
                             int PORT = 8080;
 
@@ -152,21 +150,16 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             byte[] buf = new byte[100];
 
                             DatagramPacket packet;
-                            AssetManager asst=getActivity().getAssets();
-                            for (int i = 0; i < 100; i++) {
-
-                                Log.d("UDP Client", "In for loop");
-                                InputStream input = asst.open("test.jpg");
-                                while (input.read(buf) != -1) {
-                                    packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(realip), PORT);
-                                    client.send(packet);
-                                    packetCount++;
-                                }
-                                Log.d("UDP Client", "SENT PACKET "+packetCount);
-                                input.close();
-                                Thread.sleep(500);
+                            AssetManager asst = getActivity().getAssets();
+                            InputStream input = asst.open("test.jpg");
+                            while (input.read(buf) != -1) {
+                                packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(realip), PORT);
+                                client.send(packet);
+                                Thread.sleep(1);
                             }
-                            Log.d("UDP Client", "SENT PACKET " + packetCount);
+                            input.close();
+
+                            Log.d("UDP Client", "SENT FILE");
                             client.close();
                             Log.d("UDP Client Closed", "End Transmission");
                         } catch (IOException e) {
