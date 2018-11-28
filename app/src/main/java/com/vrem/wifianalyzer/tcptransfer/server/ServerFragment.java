@@ -64,7 +64,7 @@ public class ServerFragment extends Fragment {
         gridLabel.setVerticalAxisTitle("Percentage Packets Lost");
 
         graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(100);
+        graph.getViewport().setMaxX(15);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
         graph.getViewport().setYAxisBoundsManual(true);
@@ -176,7 +176,7 @@ public class ServerFragment extends Fragment {
                             DatagramPacket dgp = new DatagramPacket(buf, buf.length);
                             Log.d("Setup", "Created datagram socket and packet");
 
-                            for (int i = 0; i < 100; i++) {
+                            for (int i = 0; i < 15; i++) {
                                 packetCount = 0;
                                 try {
                                     while (true) {
