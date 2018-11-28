@@ -1,13 +1,9 @@
 
 package com.vrem.wifianalyzer.tcptransfer.client;
 
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +18,6 @@ import android.widget.TextView;
 import com.vrem.wifianalyzer.R;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,16 +25,12 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Timer;
+
 
 import static android.app.Activity.RESULT_OK;
 
 public class ClientFragment extends Fragment implements tcpinterface {
     private static final int PICKFILE_RESULT_CODE = 8778;
-    private String file = null;
-    private int samplingCount = 10;
     private Button button1;
 
     @Nullable
@@ -49,7 +40,10 @@ public class ClientFragment extends Fragment implements tcpinterface {
 
         final EditText ip = view.findViewById(R.id.address);
         Button button = view.findViewById(R.id.FiletoSend);
-        final TextView finish = view.findViewById(R.id.finishedtext);
+
+        final TextView oneWayLatency = view.findViewById(R.id.latency);
+        final TextView oneWaythroughput = view.findViewById(R.id.throughput);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,14 +64,16 @@ public class ClientFragment extends Fragment implements tcpinterface {
             public void onClick(View view) {
 
                 final String realip = ip.getText().toString();
-//                finish.setText(realip);
                 final long timee;
                 new Thread(new Runnable() {
                     File sending;
+
                     @Override
                     public void run() {
-                        byte[] fileInBytes = new byte[4096];
+                        byte[] fileInBytes = new byte[100];
                         int count;
+                        double fileSizeInMbs = .185;
+                        double throughput = 0;
                         try {
                             /*
                              * create data inputs for the tcp client to read and write data to other person
@@ -86,10 +82,10 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             Socket client = new Socket(realip, 8080);
                             Log.i("IN", "message");
 
-                            AssetManager asst=getActivity().getAssets();
+                            AssetManager asst = getActivity().getAssets();
                             InputStream input = asst.open("test.jpg");
                             OutputStream output = client.getOutputStream();
-                            long time=System.nanoTime();
+                            long time = System.nanoTime();
                             while ((count = input.read(fileInBytes)) > 0) {
                                 /*
                                 send the data over in chunks
@@ -97,16 +93,30 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 output.write(fileInBytes, 0, count);
                                 Log.i("INT", "data being sent");
                             }
-                            final long result=System.nanoTime()-time;
-                            Log.i("TIME TAKEN",Long.toString(result)+"ns");
+                            long result = System.nanoTime() - time;
+                            result = result / 1000000000;
+                            Log.i("TIME TAKEN", Long.toString(result) + "s");
+                            throughput = fileSizeInMbs / result;
                             output.close();
                             input.close();
                             client.close();
                             Log.e("CLIENT", "FINISHED SUCCESSFULLY");
-                            finish.post(new Runnable() {
+
+                            final String latencyString = Long.toString(result);
+                            final String throughputString = Double.toString(throughput);
+
+                            oneWayLatency.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    finish.setText(Long.toString(result)+"ns");
+                                    oneWayLatency.setText("One Way Latency: " + latencyString + "s");
+                                    oneWayLatency.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            oneWaythroughput.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    oneWaythroughput.setText("One Way Latency: " + throughputString + "s");
+                                    oneWaythroughput.setVisibility(View.VISIBLE);
                                 }
                             });
                         } catch (IOException e) {
@@ -125,7 +135,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
             @Override
             public void onClick(View view) {
                 final String realip = ip.getText().toString();
-                finish.setText(realip);
+                oneWayLatency.setText(realip);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -155,6 +165,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 input.close();
                                 Thread.sleep(500);
                             }
+                            Log.d("UDP Client", "SENT PACKET " + packetCount);
                             client.close();
                             Log.d("UDP Client Closed", "End Transmission");
                         } catch (IOException e) {
@@ -183,10 +194,11 @@ public class ClientFragment extends Fragment implements tcpinterface {
             if (resultCode == RESULT_OK) {
                 TextView s = getView().findViewById(R.id.Filname);
                 s.setText(Data.getData().getPath());
-                file = Data.getData().toString();
+//                file = Data.getData().toString();
             }
         }
     }
+
     @Override
     public void publish_results(String test) {
 
