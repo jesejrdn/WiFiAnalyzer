@@ -103,7 +103,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
         throughputGraph.getViewport().setMinX(0);
         throughputGraph.getViewport().setMaxX(15);
         throughputGraph.getViewport().setMinY(0);
-        throughputGraph.getViewport().setMaxY(5);
+        throughputGraph.getViewport().setMaxY(2);
         throughputGraph.getViewport().setYAxisBoundsManual(true);
         throughputGraph.getViewport().setXAxisBoundsManual(true);
 
