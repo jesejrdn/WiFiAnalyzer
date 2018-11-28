@@ -15,7 +15,10 @@ import android.widget.TextView;
 
 import com.vrem.wifianalyzer.R;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.DatagramPacket;
@@ -68,36 +71,36 @@ public class ServerFragment extends Fragment {
                 new Thread(new Runnable() {
                     int count = 0;
 
-                    class SocketServerReplyThread extends Thread {
-
-                        private Socket hostThreadSocket;
-                        int cnt;
-
-                        SocketServerReplyThread(Socket socket, int c) {
-                            hostThreadSocket = socket;
-                            cnt = c;
-                        }
-
-                        @Override
-                        public void run() {
-                            OutputStream outputStream;
-                            String msgReply = "Hello from Server, you are #" + cnt;
-                            Log.e("mag", msgReply);
-                            try {
-                                outputStream = hostThreadSocket.getOutputStream();
-                                PrintStream printStream = new PrintStream(outputStream);
-                                printStream.print(msgReply);
-                                printStream.close();
-
-                                message += "replayed: " + msgReply + "\n";
-
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                                message += "Something wrong!\n" + e.toString() + "\n";
-                            }
-                        }
-                    }
+//                    class SocketServerReplyThread extends Thread {
+//
+//                        private Socket hostThreadSocket;
+//                        int cnt;
+//
+//                        SocketServerReplyThread(Socket socket, int c) {
+//                            hostThreadSocket = socket;
+//                            cnt = c;
+//                        }
+//
+//                        @Override
+//                        public void run() {
+//                            OutputStream outputStream;
+//                            String msgReply = "Hello from Server, you are #" + cnt;
+//                            Log.e("mag", msgReply);
+//                            try {
+//                                outputStream = hostThreadSocket.getOutputStream();
+//                                PrintStream printStream = new PrintStream(outputStream);
+//                                printStream.print(msgReply);
+//                                printStream.close();
+//
+//                                message += "replayed: " + msgReply + "\n";
+//
+//                            } catch (IOException e) {
+//                                // TODO Auto-generated catch block
+//                                e.printStackTrace();
+//                                message += "Something wrong!\n" + e.toString() + "\n";
+//                            }
+//                        }
+//                    }
 
                     @Override
                     public void run() {
@@ -113,9 +116,15 @@ public class ServerFragment extends Fragment {
                                         + socket.getInetAddress() + ":"
                                         + socket.getPort() + "\n";
                                 Log.i("message", message);
-                                SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
-                                        socket, count);
-                                socketServerReplyThread.run();
+                                BufferedReader inFromClient =
+                                        new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
+                                String clientSentence = inFromClient.readLine();
+                                Log.i("Message","data recieved");
+                                outToClient.writeBytes("msg received");
+//                                SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
+//                                        socket, count);
+//                                socketServerReplyThread.run();
                             }
                         } catch (IOException e) {
                             // TODO Auto-generated catch block

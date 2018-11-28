@@ -72,7 +72,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
                     public void run() {
                         byte[] fileInBytes = new byte[100];
                         int count;
-                        double fileSizeInMbs = .185;
+
                         double throughput = 0;
                         try {
                             /*
@@ -81,9 +81,9 @@ public class ClientFragment extends Fragment implements tcpinterface {
                             Log.i("IN", realip);
                             Socket client = new Socket(realip, 8080);
                             Log.i("IN", "message");
-
                             AssetManager asst = getActivity().getAssets();
-                            InputStream input = asst.open("test.jpg");
+                            InputStream input = asst.open("test.pdf");
+
                             OutputStream output = client.getOutputStream();
                             long time = System.nanoTime();
                             while ((count = input.read(fileInBytes)) > 0) {
@@ -94,28 +94,29 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 Log.i("INT", "data being sent");
                             }
                             long result = System.nanoTime() - time;
-                            result = result / 1000000000;
+                            double sr=result;
+                            double sresult =(sr/ 1000000000);
                             Log.i("TIME TAKEN", Long.toString(result) + "s");
-                            throughput = fileSizeInMbs / result;
+                            throughput = 1.16 / sresult;
                             output.close();
                             input.close();
                             client.close();
                             Log.e("CLIENT", "FINISHED SUCCESSFULLY");
 
-                            final String latencyString = Long.toString(result);
+                            final String latencyString = Double.toString(sresult);
                             final String throughputString = Double.toString(throughput);
 
                             oneWayLatency.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    oneWayLatency.setText("One Way Latency: " + latencyString + "s");
+                                    oneWayLatency.setText(" Latency: " + latencyString + "s");
                                     oneWayLatency.setVisibility(View.VISIBLE);
                                 }
                             });
                             oneWaythroughput.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    oneWaythroughput.setText("One Way Latency: " + throughputString + "s");
+                                    oneWaythroughput.setText("Throughput: " + throughputString+ "Mbs");
                                     oneWaythroughput.setVisibility(View.VISIBLE);
                                 }
                             });
