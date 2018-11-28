@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.vrem.wifianalyzer.R;
 
 import java.io.File;
@@ -36,7 +36,7 @@ import static android.app.Activity.RESULT_OK;
 public class ClientFragment extends Fragment implements tcpinterface {
     private static final int PICKFILE_RESULT_CODE = 8778;
     private Button button1;
-    private LineGraphSeries<DataPoint> series;
+    private PointsGraphSeries<DataPoint> series;
 
     @Nullable
     @Override
@@ -54,7 +54,7 @@ public class ClientFragment extends Fragment implements tcpinterface {
         graph.getViewport().setScrollable(true);
 
         graph.removeAllSeries();
-        series = new LineGraphSeries<DataPoint>();
+        series = new PointsGraphSeries<DataPoint>();
         graph.addSeries(series);
         graph.setTitle("Throughput vs. Latency");
 
