@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.vrem.wifianalyzer.R;
 
 import java.io.File;
@@ -36,7 +36,11 @@ import static android.app.Activity.RESULT_OK;
 public class ClientFragment extends Fragment implements tcpinterface {
     private static final int PICKFILE_RESULT_CODE = 8778;
     private Button button1;
-    private PointsGraphSeries<DataPoint> series;
+
+    private LineGraphSeries<DataPoint> seriesThroughput;
+    private LineGraphSeries<DataPoint> seriesLatency;
+    private int lastXThoughput = 0;
+    private int lastXLatency = 0;
 
     @Nullable
     @Override
@@ -49,25 +53,48 @@ public class ClientFragment extends Fragment implements tcpinterface {
         final TextView oneWayLatency = view.findViewById(R.id.latency);
         final TextView oneWaythroughput = view.findViewById(R.id.throughput);
 
-        final GraphView graph = (GraphView) view.findViewById(R.id.tcp_graph);
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setScrollable(true);
+        lastXLatency = 0;
+        lastXThoughput = 0;
 
-        graph.removeAllSeries();
-        series = new PointsGraphSeries<DataPoint>();
-        graph.addSeries(series);
-        graph.setTitle("Throughput vs. Latency");
+        final GraphView latencyGraph = (GraphView) view.findViewById(R.id.latency_graph);
+        latencyGraph.getViewport().setXAxisBoundsManual(true);
+        latencyGraph.getViewport().setScrollable(true);
 
-        GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
-        gridLabel.setHorizontalAxisTitle("One Way Latency (s)");
-        gridLabel.setVerticalAxisTitle("Throughput (MBs/s)");
+        latencyGraph.removeAllSeries();
+        seriesLatency = new LineGraphSeries<DataPoint>();
+        latencyGraph.addSeries(seriesLatency);
+        latencyGraph.setTitle("One Way Latency");
 
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(15);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(5);
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setXAxisBoundsManual(true);
+        GridLabelRenderer latencyGridLabel = latencyGraph.getGridLabelRenderer();
+        latencyGridLabel.setHorizontalAxisTitle("File #");
+        latencyGridLabel.setVerticalAxisTitle("One Way Latency (s)");
+
+        latencyGraph.getViewport().setMinX(0);
+        latencyGraph.getViewport().setMaxX(15);
+        latencyGraph.getViewport().setMinY(0);
+        latencyGraph.getViewport().setMaxY(15);
+        latencyGraph.getViewport().setYAxisBoundsManual(true);
+        latencyGraph.getViewport().setXAxisBoundsManual(true);
+
+        final GraphView throughputGraph = (GraphView) view.findViewById(R.id.throughput_graph);
+        throughputGraph.getViewport().setXAxisBoundsManual(true);
+        throughputGraph.getViewport().setScrollable(true);
+
+        throughputGraph.removeAllSeries();
+        seriesThroughput = new LineGraphSeries<DataPoint>();
+        throughputGraph.addSeries(seriesThroughput);
+        throughputGraph.setTitle("Throughput");
+
+        GridLabelRenderer throughputGridLabel = throughputGraph.getGridLabelRenderer();
+        throughputGridLabel.setHorizontalAxisTitle("File #");
+        throughputGridLabel.setVerticalAxisTitle("Throughput (MBs/s)");
+
+        throughputGraph.getViewport().setMinX(0);
+        throughputGraph.getViewport().setMaxX(15);
+        throughputGraph.getViewport().setMinY(0);
+        throughputGraph.getViewport().setMaxY(5);
+        throughputGraph.getViewport().setYAxisBoundsManual(true);
+        throughputGraph.getViewport().setXAxisBoundsManual(true);
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +116,8 @@ public class ClientFragment extends Fragment implements tcpinterface {
             @Override
             public void onClick(View view) {
 
-                graph.setVisibility(View.VISIBLE);
+                latencyGraph.setVisibility(View.VISIBLE);
+                throughputGraph.setVisibility(View.VISIBLE);
                 final String realip = ip.getText().toString();
                 final long timee;
                 new Thread(new Runnable() {
@@ -152,10 +180,16 @@ public class ClientFragment extends Fragment implements tcpinterface {
                                 }
                             });
 
-                            graph.post(new Runnable() {
+                            latencyGraph.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    addEntry(sresult, throughput);
+                                    addLatencyEntry(sresult);
+                                }
+                            });
+                            throughputGraph.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addThroughputEntry(throughput);
                                 }
                             });
                         } catch (IOException e) {
@@ -215,9 +249,13 @@ public class ClientFragment extends Fragment implements tcpinterface {
 
     }
 
-    // add data to graph
-    private void addEntry(double oneWayLatency, double throughput) {
-        series.appendData(new DataPoint(oneWayLatency, throughput), false, 15);
+
+    private void addThroughputEntry(double entry) {
+        seriesThroughput.appendData(new DataPoint(lastXThoughput++, entry), false, 15);
+    }
+
+    private void addLatencyEntry(double entry) {
+        seriesLatency.appendData(new DataPoint(lastXLatency++, entry), false, 15);
     }
 
     @Override
